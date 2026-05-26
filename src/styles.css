@@ -1,0 +1,38 @@
+@theme {
+  --breakpoint-nav-sm: 766px;
+  --breakpoint-nav-lg: 1100px;
+}
+
+@import "tailwindcss";
+
+/* Ensure default browser cursor is used */
+body {
+  cursor: auto !important;
+}
+
+/* Interactive elements should show pointer cursor */
+a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], select, textarea, [onclick] {
+  cursor: pointer !important;
+}
+
+/* Text inputs and textarea should show text cursor */
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="number"], textarea {
+  cursor: text !important;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #1f293758 inset;
+  -webkit-text-fill-color: white;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
