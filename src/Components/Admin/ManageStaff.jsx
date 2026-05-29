@@ -3,6 +3,9 @@ import { api } from "../../services/api";
 import Pagination from "../Pagination";
 import { useTranslation } from "react-i18next";
 import Swal from "../../utils/swal";
+import AdminLayout from "../Layouts/AdminLayout";
+import GlassButton from "../../UI/GlassButton";
+import { FaUsersCog, FaPlusCircle, FaSyncAlt, FaPowerOff } from "react-icons/fa";
 
 export default function ManageStaff() {
   const { t } = useTranslation();
@@ -235,167 +238,181 @@ export default function ManageStaff() {
 
   if (loading && staff.length === 0) {
     return (
-      <div className="flex justify-center items-center h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
-      </div>
+      <AdminLayout>
+        <div className="flex justify-center items-center h-[60vh] bg-transparent">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-cyan shadow-glass-cyan"></div>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="p-6 text-white max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-          Manage Staff
-        </h1>
-        <div className="flex gap-2">
-          <button
-            onClick={() => fetchStaff(1)}
-            className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg border border-zinc-700 transition-colors"
-          >
-            Refresh
-          </button>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
-          >
-            {showForm ? "Cancel" : "+ Add Staff"}
-          </button>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-start">
+            <h1 className="text-3xl font-black bg-gradient-to-r from-brand-cyan to-brand-violet bg-clip-text text-transparent uppercase tracking-wider">
+              {t("errors.manage_staff", "Staff Management")}
+            </h1>
+            <p className="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-mono font-semibold">
+              {t("admin.manage_staff_subtitle", "Provision and monitor parking facility personnel")}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <GlassButton
+              variant="cyan"
+              onClick={() => fetchStaff(1)}
+              className="px-4 py-2 font-bold uppercase text-xs tracking-wider"
+            >
+              <FaSyncAlt className="w-3 h-3" />
+              {t("refresh")}
+            </GlassButton>
+            <GlassButton
+              variant={showForm ? "violet" : "emerald"}
+              onClick={() => setShowForm(!showForm)}
+              className="px-4 py-2 font-bold uppercase text-xs tracking-wider"
+            >
+              {showForm ? t("cancel") : <><FaPlusCircle className="w-3 h-3" /> {t("errors.add_staff")}</>}
+            </GlassButton>
+          </div>
         </div>
-      </div>
 
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-lg mb-6">
-          {error}
-        </div>
-      )}
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-2xl mb-6">
+            {error}
+          </div>
+        )}
 
-      {/* Add Staff Form */}
-      {showForm && (
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-6 backdrop-blur-sm">
-          <h2 className="text-xl font-bold mb-4">Create Staff Account</h2>
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1">First Name</label>
-              <input
-                type="text"
-                name="first_name"
-                value={form.first_name}
-                onChange={handleInputChange}
-                className="w-full bg-zinc-800 border border-zinc-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 px-4 py-2 rounded-lg text-white"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1">Last Name</label>
-              <input
-                type="text"
-                name="last_name"
-                value={form.last_name}
-                onChange={handleInputChange}
-                className="w-full bg-zinc-800 border border-zinc-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 px-4 py-2 rounded-lg text-white"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleInputChange}
-                className="w-full bg-zinc-800 border border-zinc-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 px-4 py-2 rounded-lg text-white"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleInputChange}
-                className="w-full bg-zinc-800 border border-zinc-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 px-4 py-2 rounded-lg text-white"
-                required
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm text-zinc-400 mb-1">Assign Ground</label>
-              <select
-                name="ground_id"
-                value={form.ground_id}
-                onChange={handleInputChange}
-                className="w-full bg-zinc-800 border border-zinc-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 px-4 py-2 rounded-lg text-white"
-                required
-              >
-                <option value="">Select a ground</option>
-                {grounds.map((g) => (
-                  <option key={g.id} value={g.id}>{g.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="md:col-span-2">
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full md:w-auto px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 rounded-lg transition-colors font-medium"
-              >
-                {submitting ? "Creating..." : "Create Staff"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+        {/* Add Staff Form */}
+        {showForm && (
+          <div className="glass-panel rounded-3xl p-8 mb-8 border border-white/5 shadow-2xl animate-in slide-in-from-top-4">
+            <h2 className="text-xl font-black mb-6 text-white uppercase tracking-wider text-start">Create Official Account</h2>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="text-start">
+                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 px-1">{t("firstName")}</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  value={form.first_name}
+                  onChange={handleInputChange}
+                  className="w-full bg-zinc-800/50 border border-white/5 focus:ring-2 focus:ring-brand-emerald/30 px-4 py-3 rounded-xl text-white outline-none transition-all"
+                  required
+                />
+              </div>
+              <div className="text-start">
+                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 px-1">{t("lastName")}</label>
+                <input
+                  type="text"
+                  name="last_name"
+                  value={form.last_name}
+                  onChange={handleInputChange}
+                  className="w-full bg-zinc-800/50 border border-white/5 focus:ring-2 focus:ring-brand-emerald/30 px-4 py-3 rounded-xl text-white outline-none transition-all"
+                  required
+                />
+              </div>
+              <div className="text-start">
+                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 px-1">{t("email")}</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleInputChange}
+                  className="w-full bg-zinc-800/50 border border-white/5 focus:ring-2 focus:ring-brand-emerald/30 px-4 py-3 rounded-xl text-white outline-none transition-all font-mono"
+                  required
+                />
+              </div>
+              <div className="text-start">
+                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 px-1">{t("password")}</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={form.password}
+                  onChange={handleInputChange}
+                  className="w-full bg-zinc-800/50 border border-white/5 focus:ring-2 focus:ring-brand-emerald/30 px-4 py-3 rounded-xl text-white outline-none transition-all font-mono"
+                  required
+                />
+              </div>
+              <div className="md:col-span-2 text-start">
+                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 px-1">{t("errors.staff_ground")}</label>
+                <select
+                  name="ground_id"
+                  value={form.ground_id}
+                  onChange={handleInputChange}
+                  className="w-full bg-zinc-800/50 border border-white/5 focus:ring-2 focus:ring-brand-emerald/30 px-4 py-3 rounded-xl text-white outline-none transition-all"
+                  required
+                >
+                  <option value="" className="bg-zinc-900">Select Facility</option>
+                  {grounds.map((g) => (
+                    <option key={g.id} value={g.id} className="bg-zinc-900">{g.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="md:col-span-2 text-start">
+                <GlassButton
+                  type="submit"
+                  disabled={submitting}
+                  variant="emerald"
+                  className="w-full md:w-auto px-10 py-3 font-black uppercase text-xs tracking-widest shadow-glass-emerald"
+                >
+                  {submitting ? t("processing") : t("errors.add_staff")}
+                </GlassButton>
+              </div>
+            </form>
+          </div>
+        )}
 
-      {/* Staff Table */}
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden backdrop-blur-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-start border-collapse">
-            <thead>
-              <tr className="bg-zinc-800/50 text-zinc-400 text-sm uppercase tracking-wider">
-                <th className="px-6 py-4 font-medium text-start">Name</th>
-                <th className="px-6 py-4 font-medium text-start">Email</th>
-                <th className="px-6 py-4 font-medium text-start">Ground</th>
-                <th className="px-6 py-4 font-medium text-start">Created</th>
-                <th className="px-6 py-4 font-medium text-end">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800">
-              {staff.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-zinc-500">
-                    No staff accounts found
-                  </td>
+        {/* Staff Table */}
+        <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl border border-white/5">
+          <div className="overflow-x-auto">
+            <table className="w-full text-start border-collapse text-xs">
+              <thead>
+                <tr className="bg-zinc-950/40 text-zinc-500 uppercase tracking-wider font-mono">
+                  <th className="px-6 py-4 font-bold text-start">{t("errors.staff_name")}</th>
+                  <th className="px-6 py-4 font-bold text-start">{t("errors.staff_email")}</th>
+                  <th className="px-6 py-4 font-bold text-start">{t("errors.staff_ground")}</th>
+                  <th className="px-6 py-4 font-bold text-start">Join Date</th>
+                  <th className="px-6 py-4 font-bold text-end">{t("errors.staff_actions")}</th>
                 </tr>
-              ) : (
-                staff.map((s) => (
-                  <tr key={s.id} className="hover:bg-zinc-800/30 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="font-medium">{s.first_name} {s.last_name}</div>
-                    </td>
-                    <td className="px-6 py-4 text-zinc-300 font-mono text-sm">{s.email}</td>
-                    <td className="px-6 py-4">
-                      <span className="text-green-400" dir="auto">{s.ground_name || "—"}</span>
-                    </td>
-                    <td className="px-6 py-4 text-zinc-400 text-sm">
-                      {new Date(s.created_at).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 text-end">
-                      <button
-                        onClick={() => handleDelete(s.id, `${s.first_name} ${s.last_name}`)}
-                        className="text-red-400 hover:text-red-300 text-sm font-medium transition-colors"
-                      >
-                        Delete
-                      </button>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-zinc-300">
+                {staff.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-12 text-center text-zinc-500 font-mono">
+                      {t("errors.no_staff_found")}
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  staff.map((s) => (
+                    <tr key={s.id} className="hover:bg-white/5 transition-colors group">
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-white text-sm">{s.first_name} {s.last_name}</div>
+                        <div className="text-[10px] text-zinc-500 font-mono uppercase">ID: #{s.id}</div>
+                      </td>
+                      <td className="px-6 py-4 text-zinc-300 font-mono">{s.email}</td>
+                      <td className="px-6 py-4">
+                        <span className="text-brand-cyan font-bold" dir="auto">{s.ground_name || "—"}</span>
+                      </td>
+                      <td className="px-6 py-4 text-zinc-500 font-mono">
+                        {new Date(s.created_at).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 text-end">
+                        <button
+                          onClick={() => handleDelete(s.id, `${s.first_name} ${s.last_name}`)}
+                          className="text-red-400 hover:text-red-300 text-[10px] font-black uppercase tracking-widest transition-all p-2 hover:bg-red-500/10 rounded-lg"
+                        >
+                          {t("delete")}
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      <Pagination currentPage={page} lastPage={lastPage} onPageChange={handlePageChange} />
-    </div>
+        <Pagination currentPage={page} lastPage={lastPage} onPageChange={handlePageChange} />
+      </div>
+    </AdminLayout>
   );
 }

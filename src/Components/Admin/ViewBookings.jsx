@@ -74,9 +74,11 @@ export default function ViewBookings() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background-base flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-cyan shadow-glass-cyan"></div>
-      </div>
+      <AdminLayout>
+        <div className="min-h-screen bg-transparent flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-cyan shadow-glass-cyan"></div>
+        </div>
+      </AdminLayout>
     );
   }
 

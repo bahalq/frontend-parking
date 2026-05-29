@@ -5,6 +5,8 @@ import ImageUpload from "./UploadImages";
 import { useTranslation } from "react-i18next";
 import { api } from "../services/api";
 import AdminLayout from "./Layouts/AdminLayout";
+import GlassButton from "../UI/GlassButton";
+import { FaMapMarkerAlt, FaImage, FaArrowRight, FaArrowLeft, FaPlusCircle } from "react-icons/fa";
 
 export default function AddGround() {
   const { t, i18n } = useTranslation();
@@ -75,49 +77,58 @@ export default function AddGround() {
 
   return (
     <AdminLayout>
-      <div className="flex justify-center">
-        <div className="w-full max-w-4xl bg-zinc-900 rounded-xl shadow-2xl overflow-hidden border border-zinc-800">
-          {/* Header */}
-          <div className="bg-zinc-800 p-6 border-b border-zinc-700">
-            <h1 className="text-2xl font-bold text-white mb-2 text-start">
-              {t("addGround")} - {step === 1 ? t("booking.steps.info") : t("fields.location")}
-            </h1>
-            <div className="flex gap-2 text-sm text-gray-400">
-              <span className={step === 1 ? "text-green-400 font-bold" : ""}>
-                1. {t("fields.general") || "General"}
-              </span>
-              <span>{i18n.language === "ar" ? "←" : "→"}</span>
-              <span className={step === 2 ? "text-green-400 font-bold" : ""}>
-                2. {t("fields.location")} & {t("images")}
-              </span>
+      <div className="max-w-4xl mx-auto space-y-8 p-6">
+        <div className="text-start">
+          <h1 className="text-3xl font-black bg-gradient-to-r from-brand-cyan to-brand-violet bg-clip-text text-transparent uppercase tracking-wider">
+            {t("addGround")}
+          </h1>
+          <p className="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-mono font-semibold">
+            {t("admin.add_ground_subtitle", "Initialize a new parking facility in the system")}
+          </p>
+        </div>
+
+        <div className="glass-panel rounded-3xl shadow-2xl overflow-hidden border border-white/5">
+          {/* Progress Header */}
+          <div className="bg-zinc-950/40 p-8 border-b border-white/5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step === 1 ? 'bg-brand-cyan text-white shadow-glass-cyan' : 'bg-zinc-800 text-zinc-500'}`}>1</div>
+                <span className={`text-xs font-black uppercase tracking-widest ${step === 1 ? 'text-white' : 'text-zinc-500'}`}>{t("fields.general") || "General Info"}</span>
+              </div>
+              <div className="h-px flex-1 bg-white/5 mx-4"></div>
+              <div className="flex items-center gap-4">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step === 2 ? 'bg-brand-cyan text-white shadow-glass-cyan' : 'bg-zinc-800 text-zinc-500'}`}>2</div>
+                <span className={`text-xs font-black uppercase tracking-widest ${step === 2 ? 'text-white' : 'text-zinc-500'}`}>{t("fields.location")} & {t("images")}</span>
+              </div>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-8">
+          <form onSubmit={handleSubmit} className="p-10 space-y-8">
             {error && (
-              <div className="bg-red-900/50 text-red-200 p-4 rounded mb-6 border border-red-800 text-start">
-                {error}
+              <div className="bg-red-500/10 text-red-400 p-6 rounded-2xl border border-red-500/20 text-start animate-in fade-in slide-in-from-top-4">
+                <p className="font-bold uppercase text-[10px] tracking-widest mb-1">{t("error")}</p>
+                <p className="text-sm">{error}</p>
               </div>
             )}
 
             {/* Step 1: Basic Details */}
             {step === 1 && (
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-400 block text-start">
+              <div className="space-y-8 animate-in fade-in slide-in-from-right-4">
+                <div className="space-y-2 text-start">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">
                     {t("groundName")}
                   </label>
                   <input
                     name="name"
                     value={form.name}
                     onChange={handleChange}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 focus:border-green-500 focus:outline-none transition-colors"
-                    placeholder={t("groundName")}
+                    className="w-full bg-zinc-900/50 border border-white/5 rounded-2xl p-4 text-white outline-none focus:ring-2 focus:ring-brand-cyan/30 transition-all"
+                    placeholder="e.g. Downtown Central Parking"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-400 block text-start">
+                <div className="space-y-2 text-start">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1">
                     {t("groundDescription")}
                   </label>
                   <textarea
@@ -125,39 +136,47 @@ export default function AddGround() {
                     value={form.description}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 focus:border-green-500 focus:outline-none transition-colors"
+                    className="w-full bg-zinc-900/50 border border-white/5 rounded-2xl p-4 text-white outline-none focus:ring-2 focus:ring-brand-cyan/30 transition-all resize-none"
+                    placeholder="Brief overview of the facility and its access points..."
                   />
                 </div>
 
                 <div className="flex justify-end pt-4">
-                  <button
+                  <GlassButton
                     type="button"
+                    variant="cyan"
                     onClick={() => setStep(2)}
-                    className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                    className="px-8 py-3 font-black uppercase text-xs tracking-widest"
                   >
-                    {t("next")} {i18n.language === "ar" ? "←" : "→"}
-                  </button>
+                    {t("next")} <FaArrowRight className="ms-2 rtl:rotate-180" />
+                  </GlassButton>
                 </div>
               </div>
             )}
 
             {/* Step 2: Location & Images */}
             {step === 2 && (
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <label className="text-lg font-bold text-white mb-2 block text-start">
-                    {t("imageUpload")}
-                  </label>
-                  <div className="bg-zinc-950 p-4 rounded-lg border border-zinc-800">
+              <div className="space-y-10 animate-in fade-in slide-in-from-left-4">
+                <div className="space-y-4 text-start">
+                  <div className="flex items-center gap-2 mb-2 px-1">
+                    <FaImage className="text-brand-cyan" />
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                      {t("imageUpload")}
+                    </label>
+                  </div>
+                  <div className="bg-zinc-950/40 p-6 rounded-2xl border border-white/5 backdrop-blur-sm">
                     <ImageUpload onChange={setImages} />
                   </div>
                 </div>
 
-                 <div className="space-y-2">
-                   <label className="text-lg font-bold text-white mb-2 block text-start">
-                     {t("locationPicker")}
-                   </label>
-                  <div className="h-64 rounded-lg overflow-hidden border border-zinc-700 relative">
+                 <div className="space-y-4 text-start">
+                   <div className="flex items-center gap-2 mb-2 px-1">
+                     <FaMapMarkerAlt className="text-brand-violet" />
+                     <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                       {t("locationPicker")}
+                     </label>
+                   </div>
+                  <div className="h-80 rounded-3xl overflow-hidden border border-white/5 relative shadow-xl">
                     <LocationPicker
                       location={location}
                       setCity={setCity}
@@ -165,28 +184,29 @@ export default function AddGround() {
                     />
                   </div>
                   {location && (
-                    <p className="text-sm text-green-400 mt-2 text-start">
-                      {t("selected")}: {location.lat.toFixed(6)},{" "}
-                      {location.lng.toFixed(6)}
-                    </p>
+                    <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-2 rounded-full border border-emerald-500/20 text-[10px] font-mono font-bold uppercase mt-2">
+                      <FaMapMarkerAlt /> {location.lat.toFixed(6)}, {location.lng.toFixed(6)}
+                    </div>
                   )}
                 </div>
 
-                <div className="flex justify-between pt-4">
+                <div className="flex justify-between pt-6 border-t border-white/5">
                   <button
                     type="button"
                     onClick={() => setStep(1)}
-                    className="text-gray-400 hover:text-white px-4 py-2 flex items-center gap-2"
+                    className="text-zinc-500 hover:text-white px-4 py-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-all"
                   >
-                    {i18n.language === "ar" ? "→" : "←"} {t("booking.back")}
+                    <FaArrowLeft className="rtl:rotate-180" /> {t("booking.back")}
                   </button>
-                  <button
+                  <GlassButton
                     type="submit"
                     disabled={loading}
-                    className={`bg-green-600 hover:bg-green-500 text-white px-8 py-3 rounded-lg font-bold transition-all transform hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    variant="emerald"
+                    className="px-10 py-3 font-black uppercase text-xs tracking-widest shadow-glass-emerald"
                   >
-                    {loading ? t("loading") : t("saveGround")}
-                  </button>
+                    {loading ? <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div> : <FaPlusCircle className="me-2" />}
+                    {t("saveGround")}
+                  </GlassButton>
                 </div>
               </div>
             )}

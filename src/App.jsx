@@ -12,7 +12,7 @@ import ViewAllGrounds from "./Components/viewAllGrounds";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import GroundDetails from "./Components/GroundDetails";
 import GroundsList from "./Components/GroundsList";
-import ManageTerrains from "./Components/Admin/ManageTerrains";
+import ManageParkingSpots from "./Components/Admin/ManageParkingSpots";
 import ViewBookings from "./Components/Admin/ViewBookings";
 import ViewClients from "./Components/Admin/ViewClients";
 import VerifyTicket from "./Components/Admin/VerifyTicket";
@@ -95,7 +95,7 @@ function App() {
           path="/admin/grounds/:id/terrains"
           element={
             <ProtectedRoute isLogin={isLogin} role={role} requiredRole="Admin">
-              <ManageTerrains />
+              <ManageParkingSpots />
             </ProtectedRoute>
           }
         />

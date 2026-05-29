@@ -75,42 +75,48 @@ export default function Home({ isLogin, role }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const [activities, setActivities] = useState([]);
-  const [loadingActivities, setLoadingActivities] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   useEffect(() => {
     document.body.style.fontFamily = i18n.language === "ar" ? "Cairo" : "Outfit, Inter";
   }, [i18n.language]);
 
   useEffect(() => {
-    const fetchActivities = async () => {
+    const fetchCategories = async () => {
       try {
         const data = await api.getActivities();
         if (data.success) {
-          setActivities(data.activities || []);
+          setCategories(data.activities || []);
         }
       } catch (error) {
-        console.error("Failed to fetch activities:", error);
+        console.error("Failed to fetch vehicle categories:", error);
       } finally {
-        setLoadingActivities(false);
+        setLoadingCategories(false);
       }
     };
-    fetchActivities();
+    fetchCategories();
   }, []);
 
-  const getActivityIcon = (activityName) => {
+  const getCategoryIcon = (categoryName) => {
     const iconMap = {
       Football: <FaCar className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
+      Sedan: <FaCar className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       Tennis: <FaMotorcycle className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
+      Motorcycle: <FaMotorcycle className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       Basketball: <FaChargingStation className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
+      EV: <FaChargingStation className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       Volleyball: <FaShuttleVan className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
+      SUV: <FaShuttleVan className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       Handball: <FaCarSide className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
+      Compact: <FaCarSide className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       Badminton: <FaWheelchair className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
+      Accessible: <FaWheelchair className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       Swimming: <FaTruck className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       "Table Tennis": <FaClock className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
       Padel: <FaCrown className="w-10 h-10 text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />,
     };
-    return iconMap[activityName] || <FaParking className="w-10 h-10 text-cyan-400 mb-2" />;
+    return iconMap[categoryName] || <FaParking className="w-10 h-10 text-cyan-400 mb-2" />;
   };
 
   return (
@@ -213,29 +219,29 @@ export default function Home({ isLogin, role }) {
             <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
           </div>
 
-          {loadingActivities ? (
+          {loadingCategories ? (
             <div className="flex justify-center items-center h-40">
               <div className="text-cyan-500 text-xl animate-pulse">
                 {t("loading", "Loading...")}
               </div>
             </div>
-          ) : activities.length === 0 ? (
+          ) : categories.length === 0 ? (
             <p className="text-slate-500">{t("no_activities_available", "No vehicle categories available")}</p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 max-w-6xl mx-auto">
-              {activities.map((activity, index) => (
+              {categories.map((category, index) => (
                 <div
-                  key={activity.id}
+                  key={category.id}
                   className="flex flex-col items-center justify-center p-6 bg-slate-950/40 backdrop-blur-sm rounded-xl border border-slate-900 shadow-md transition-all duration-300 cursor-pointer hover:border-cyan-500/40 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]"
                   style={{ transitionDelay: `${index * 40}ms` }}
                 >
-                  {getActivityIcon(activity.name) || (
+                  {getCategoryIcon(category.name) || (
                     <div className="w-10 h-10 flex items-center justify-center text-cyan-400 mb-3 text-2xl font-bold">
-                      {activity.name.charAt(0)}
+                      {category.name.charAt(0)}
                     </div>
                   )}
                   <span className="text-sm font-semibold tracking-wide text-slate-300">
-                    {t(`booking.activities.${activity.name}`, activity.name)}
+                    {t(`booking.activities.${category.name}`, category.name)}
                   </span>
                 </div>
               ))}
