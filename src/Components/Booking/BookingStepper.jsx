@@ -47,18 +47,18 @@ export default function BookingStepper({ ground }) {
   const CurrentComponent = steps.find((s) => s.id === step)?.component;
 
   return (
-    <div className="bg-zinc-800 p-6 rounded-lg text-white mt-8">
+    <div className="glass-panel p-6 sm:p-8 rounded-3xl text-white mt-8">
       {/* Stepper Header */}
-      <div className="flex justify-between mb-6 border-b border-zinc-700 pb-4">
+      <div className="flex justify-between mb-8 border-b border-white/5 pb-4">
         {steps.map((s) => (
           <div
             key={s.id}
-            className={`flex items-center gap-2 ${
-              step >= s.id ? "text-green-500" : "text-gray-500"
+            className={`flex items-center gap-2 transition-colors duration-300 ${
+              step >= s.id ? "text-brand-cyan font-bold" : "text-zinc-500"
             }`}
           >
-            <span className={`w-6 h-6 rounded-full flex items-center justify-center border ${
-               step >= s.id ? "border-green-500 bg-green-500/10" : "border-gray-600"
+            <span className={`w-7 h-7 rounded-full flex items-center justify-center border text-xs transition-all duration-300 ${
+               step >= s.id ? "border-brand-cyan bg-brand-cyan/15 shadow-glass-cyan text-white" : "border-zinc-700 bg-zinc-950/50 text-zinc-500"
             }`}>
               {s.id}
             </span>

@@ -49,7 +49,7 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
     today.setHours(0, 0, 0, 0);
     if (dateObj < today) return "disabled";
 
-    return "available"; // Light blue
+    return "available"; // Cyan
   };
 
   const changeMonth = (delta) => {
@@ -83,33 +83,37 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">{t("booking.select_date")}</h2>
-      <div className="flex gap-4 mb-4 text-sm">
+    <div className="relative">
+      <h2 className="text-xl font-extrabold text-white tracking-tight mb-6 flex items-center gap-2">
+        <span className="w-1.5 h-6 bg-cyan-500 rounded-full"></span>
+        {t("booking.select_date")}
+      </h2>
+
+      <div className="flex flex-wrap gap-4 mb-6 text-xs font-semibold tracking-wide uppercase">
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-blue-300"></span>
-          <span>{t("booking.available")}</span>
+          <span className="w-4 h-4 rounded bg-cyan-950/40 border border-cyan-500/35"></span>
+          <span className="text-slate-300">{t("booking.available")}</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-red-500"></span>
-          <span>{t("booking.full")}</span>
+          <span className="w-4 h-4 rounded bg-red-950/40 border border-red-500/30"></span>
+          <span className="text-slate-300">{t("booking.full")}</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-zinc-700 border border-zinc-500"></span>
-          <span>{t("booking.closed")}</span>
+          <span className="w-4 h-4 rounded bg-slate-950 border border-slate-800"></span>
+          <span className="text-slate-500">{t("booking.closed")}</span>
         </div>
       </div>
 
-      <div className="flex justify-between items-center mb-4 bg-zinc-700 p-2 rounded">
+      <div className="flex justify-between items-center mb-6 bg-slate-900 border border-slate-800 p-2.5 rounded-xl">
         <button
           onClick={() => changeMonth(-1)}
-          className="px-3 py-1 hover:bg-zinc-600 rounded"
+          className="p-2 hover:bg-slate-800 hover:text-cyan-400 rounded-lg transition-colors"
         >
-          {i18n.language === "ar" ? <HiChevronRight /> : <HiChevronLeft />}
+          {i18n.language === "ar" ? <HiChevronRight size={20} /> : <HiChevronLeft size={20} />}
         </button>
-        <span className="font-bold">
+        <span className="font-bold text-white tracking-tight">
           {currentDate.toLocaleString(i18n.language, {
             month: "long",
             year: "numeric",
@@ -117,13 +121,13 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
         </span>
         <button
           onClick={() => changeMonth(1)}
-          className="px-3 py-1 hover:bg-zinc-600 rounded"
+          className="p-2 hover:bg-slate-800 hover:text-cyan-400 rounded-lg transition-colors"
         >
-          {i18n.language === "ar" ? <HiChevronLeft /> : <HiChevronRight />}
+          {i18n.language === "ar" ? <HiChevronLeft size={20} /> : <HiChevronRight size={20} />}
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 text-center mb-2 text-xs text-gray-400">
+      <div className="grid grid-cols-7 gap-2 text-center mb-3 text-xs font-bold tracking-wide uppercase text-slate-500">
         {weekDays.map((d) => (
           <div key={d}>{formatWeekDayLabel(d)}</div>
         ))}
@@ -137,19 +141,19 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
         {Array.from({ length: daysInMonth }).map((_, i) => {
           const day = i + 1;
           const status = getDayStatus(day);
-          let bgClass = "bg-zinc-700 text-gray-400 cursor-not-allowed"; // disabled
+          let bgClass = "bg-slate-950 border border-slate-900 text-slate-600 cursor-not-allowed"; // disabled
 
           if (status === "available") {
             bgClass =
-              "bg-blue-200 text-blue-900 hover:bg-blue-400 cursor-pointer"; // Light blue
+              "bg-cyan-950/20 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500 hover:text-white cursor-pointer shadow-sm"; // Cyan
             if (
               data.date ===
               `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`
             ) {
-              bgClass = "bg-blue-600 text-white"; // Selected (Dark blue)
+              bgClass = "bg-cyan-600 text-white border-cyan-500 shadow-[0_0_12px_rgba(6,182,212,0.4)]"; // Selected
             }
           } else if (status === "full") {
-            bgClass = "bg-red-500 text-white cursor-not-allowed opacity-50"; // Red
+            bgClass = "bg-red-950/20 text-red-400 border border-red-500/20 cursor-not-allowed opacity-50"; // Red
           }
 
           return (
@@ -161,7 +165,7 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
                 status === "loading"
               }
               onClick={() => handleDateClick(day)}
-              className={`p-2 rounded-lg font-bold transition-all ${bgClass}`}
+              className={`p-3 rounded-xl font-bold transition-all text-sm ${bgClass}`}
             >
               {day}
             </button>
@@ -171,7 +175,7 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
 
       <button
         onClick={prevStep}
-        className="mt-6 text-gray-400 hover:text-white flex items-center gap-2"
+        className="mt-8 text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-2 font-medium text-sm"
       >
         {i18n.language === "ar" ? <HiArrowRight /> : <HiArrowLeft />}
         {t("booking.back")}

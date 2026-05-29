@@ -120,112 +120,115 @@ export default function GroundsList() {
     <div className="w-full">
       {/* Search and Filters Section */}
       <div
-        className="mb-6 rounded-xl bg-zinc-900/80 p-6 shadow-lg backdrop-blur-sm"
+        className="mb-6 rounded-xl glass-panel p-6 shadow-2xl relative"
         dir={isRTL ? "rtl" : "ltr"}
       >
-        {/* Search Bar */}
-        <div className="relative mb-6">
-          <FiSearch
-            className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "right-4" : "left-4"} h-5 w-5 text-zinc-500 transition-colors group-focus-within:text-green-400`}
-          />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={t("search_placeholder")}
-            className="w-full rounded-lg border border-zinc-700 bg-zinc-800 py-3 pl-12 pr-4 text-white placeholder-zinc-500 transition-all focus:border-green-500 focus:bg-zinc-800/90 focus:outline-none focus:ring-2 focus:ring-green-500/20"
-            dir="auto"
-          />
-        </div>
-
-        {/* Filters Row */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-4">
-          {/* Activity Filter - Pills */}
-          <div className="flex-1">
-            <label className="mb-2 block text-sm font-medium text-zinc-400">
-              {t("filter_by_activity")}
-            </label>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedActivity("")}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${selectedActivity === ""
-                    ? "bg-green-600 text-white shadow-lg shadow-green-500/20"
-                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
-                  }`}
-              >
-                {t("all_activities")}
-              </button>
-              {activities.map((act) => {
-                const displayName = t(`booking.activities.${act.name}`, act.name);
-                const isActive = selectedActivity === String(act.id);
-                return (
-                  <button
-                    key={act.id}
-                    onClick={() =>
-                      setSelectedActivity(isActive ? "" : String(act.id))
-                    }
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${isActive
-                        ? "bg-green-600 text-white shadow-lg shadow-green-500/20"
-                        : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
-                      }`}
-                    title={displayName}
-                  >
-                    {displayName}
-                  </button>
-                );
-              })}
-            </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent rounded-xl pointer-events-none z-0"></div>
+        <div className="relative z-10">
+          {/* Search Bar */}
+          <div className="relative mb-6 group">
+            <FiSearch
+              className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "right-4" : "left-4"} h-5 w-5 text-slate-500 transition-colors group-focus-within:text-cyan-400`}
+            />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t("search_placeholder")}
+              className="w-full rounded-lg border border-slate-800 bg-slate-950/65 py-3 pl-12 pr-4 text-white placeholder-slate-500 transition-all focus:border-cyan-500 focus:bg-slate-950/90 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+              dir="auto"
+            />
           </div>
 
-          {/* City Filter - Dropdown */}
-          {cities.length > 0 && (
-            <div className="sm:w-48">
-              <label className="mb-2 block text-sm font-medium text-zinc-400">
-                {t("filter_by_city")}
+          {/* Filters Row */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-4">
+            {/* Activity Filter - Pills */}
+            <div className="flex-1">
+              <label className="mb-2 block text-sm font-semibold tracking-wide text-cyan-400 uppercase">
+                {t("filter_by_activity")}
               </label>
-              <div className="relative">
-                <select
-                  value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  className="w-full appearance-none rounded-lg border border-zinc-700 bg-zinc-800 py-3 pl-4 pr-10 text-white transition-colors focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20"
-                  dir={isRTL ? "rtl" : "ltr"}
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedActivity("")}
+                  className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${selectedActivity === ""
+                      ? "bg-cyan-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+                      : "bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-100 hover:border-cyan-500/25"
+                    }`}
                 >
-                  <option value="">{t("all_cities")}</option>
-                  {cities.map((city) => (
-                    <option key={city} value={city} dir="auto">
-                      {city}
-                    </option>
-                  ))}
-                </select>
-                <svg
-                  className={`pointer-events-none absolute top-1/2 ${isRTL ? "left-3" : "right-3"} -translate-y-1/2 h-4 w-4 text-zinc-500`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+                  {t("all_activities")}
+                </button>
+                {activities.map((act) => {
+                  const displayName = t(`booking.activities.${act.name}`, act.name);
+                  const isActive = selectedActivity === String(act.id);
+                  return (
+                    <button
+                      key={act.id}
+                      onClick={() =>
+                        setSelectedActivity(isActive ? "" : String(act.id))
+                      }
+                      className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${isActive
+                          ? "bg-cyan-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+                          : "bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-100 hover:border-cyan-500/25"
+                        }`}
+                      title={displayName}
+                    >
+                      {displayName}
+                    </button>
+                  );
+                })}
               </div>
             </div>
-          )}
 
-          {/* Clear Filters Button */}
-          {hasActiveFilters && (
-            <div className="sm:w-auto">
-              <button
-                onClick={clearAllFilters}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm font-medium text-zinc-400 transition-all hover:border-red-900/50 hover:bg-red-950/50 hover:text-red-400 sm:w-auto"
-              >
-                <FiX className="h-4 w-4" />
-                {t("clear_filters")}
-              </button>
-            </div>
-          )}
+            {/* City Filter - Dropdown */}
+            {cities.length > 0 && (
+              <div className="sm:w-48">
+                <label className="mb-2 block text-sm font-semibold tracking-wide text-cyan-400 uppercase">
+                  {t("filter_by_city")}
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    className="w-full appearance-none rounded-lg border border-slate-800 bg-slate-950/65 py-3 pl-4 pr-10 text-white transition-colors focus:border-cyan-500 focus:bg-slate-950/90 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+                    dir={isRTL ? "rtl" : "ltr"}
+                  >
+                    <option value="">{t("all_cities")}</option>
+                    {cities.map((city) => (
+                      <option key={city} value={city} dir="auto">
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    className={`pointer-events-none absolute top-1/2 ${isRTL ? "left-3" : "right-3"} -translate-y-1/2 h-4 w-4 text-slate-500`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+            {/* Clear Filters Button */}
+            {hasActiveFilters && (
+              <div className="sm:w-auto">
+                <button
+                  onClick={clearAllFilters}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3 text-sm font-medium text-slate-400 transition-all hover:border-red-900/50 hover:bg-red-950/50 hover:text-red-400 sm:w-auto"
+                >
+                  <FiX className="h-4 w-4" />
+                  {t("clear_filters")}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

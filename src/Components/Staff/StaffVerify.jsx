@@ -9,6 +9,7 @@ import {
 } from "react-icons/hi";
 import { api } from "../../services/api";
 import StaffBookingDetails from "./StaffBookingDetails";
+import StaffLayout from "../Layouts/StaffLayout";
 
 function extractToken(value) {
   const rawValue = (value || "").trim();
@@ -182,155 +183,155 @@ export default function StaffVerify() {
   };
 
   return (
-    <div className="min-h-screen text-white">
-      <div className="pt-[10vh] pb-20 px-4 sm:px-6 sm:py-10">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-6 rounded-[28px] border border-white/10 bg-zinc-900/70 p-6 shadow-[0_25px_70px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-300/80">
-              {t("brand")}
-            </p>
-            <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
-              {t("staff.verify")}
-            </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-300 sm:text-base">
-              {t("staff.subtitle")}
-            </p>
+    <StaffLayout>
+      <div className="space-y-6">
+        {/* Verification Title */}
+        <div className="glass-panel p-6 rounded-3xl relative overflow-hidden">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-brand-emerald font-mono">
+            {t("brand", "ParkSmart Gatekeeper")}
+          </p>
+          <h1 className="mt-2 text-2xl font-black bg-gradient-to-r from-brand-emerald to-brand-cyan bg-clip-text text-transparent uppercase tracking-wider">
+            {t("staff.verify", "Reservation Validation")}
+          </h1>
+          <p className="mt-2 text-xs leading-5 text-zinc-400 font-medium">
+            {t("staff.subtitle", "Scan the booking QR code or enter the reference manually to verify reservation details instantly.")}
+          </p>
+        </div>
+
+        {/* Validator Controls */}
+        <div className="glass-panel p-5 rounded-3xl">
+          <div className="mb-6 grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => setMode("qr")}
+              className={`rounded-2xl border py-3.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                mode === "qr"
+                  ? "border-brand-emerald/40 bg-brand-emerald/15 text-white shadow-glass-emerald"
+                  : "border-white/5 bg-zinc-900/40 text-zinc-400 hover:bg-zinc-900"
+              }`}
+            >
+              {t("staff.scan_qr", "QR Scan Camera")}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("reference")}
+              className={`rounded-2xl border py-3.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                mode === "reference"
+                  ? "border-brand-emerald/40 bg-brand-emerald/15 text-white shadow-glass-emerald"
+                  : "border-white/5 bg-zinc-900/40 text-zinc-400 hover:bg-zinc-900"
+              }`}
+            >
+              {t("staff.enter_reference", "Keyboard Input")}
+            </button>
           </div>
 
-          <div className="rounded-[28px] border border-white/10 bg-zinc-900/70 p-4 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:p-6">
-            <div className="mb-6 grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setMode("qr")}
-                className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
-                  mode === "qr"
-                    ? "border-emerald-400/40 bg-emerald-500/15 text-white"
-                    : "border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10"
-                }`}
-              >
-                {t("staff.scan_qr")}
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode("reference")}
-                className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
-                  mode === "reference"
-                    ? "border-emerald-400/40 bg-emerald-500/15 text-white"
-                    : "border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10"
-                }`}
-              >
-                {t("staff.enter_reference")}
-              </button>
+          {mode === "qr" && (
+            <div className="space-y-4">
+              <div className="rounded-2xl bg-zinc-950/60 p-4 border border-white/5">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-emerald/15 text-brand-emerald">
+                    <HiOutlineCamera className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-white uppercase tracking-wide">
+                      {t("staff.scan_qr", "QR Code Reader")}
+                    </h2>
+                    <p className="text-[11px] text-zinc-500 font-medium">
+                      {t("staff.scan_hint", "Use device camera to focus on the driver's QR ticket.")}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-black">
+                  <div className="pointer-events-none absolute top-4 left-4 z-10 h-6 w-6 rounded-tl-md border-t-2 border-l-2 border-brand-emerald animate-pulse" />
+                  <div className="pointer-events-none absolute top-4 right-4 z-10 h-6 w-6 rounded-tr-md border-t-2 border-r-2 border-brand-emerald animate-pulse" />
+                  <div className="pointer-events-none absolute bottom-4 left-4 z-10 h-6 w-6 rounded-bl-md border-b-2 border-l-2 border-brand-emerald animate-pulse" />
+                  <div className="pointer-events-none absolute bottom-4 right-4 z-10 h-6 w-6 rounded-br-md border-b-2 border-r-2 border-brand-emerald animate-pulse" />
+                  <div id={scannerId} className="w-full text-zinc-400" />
+                </div>
+
+                {scannerError && (
+                  <div className="mt-4 flex items-center gap-2.5 rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3">
+                    <HiXCircle className="h-5 w-5 shrink-0 text-red-400" />
+                    <p className="text-xs font-semibold text-red-200">{scannerError}</p>
+                  </div>
+                )}
+
+                {result?.booking && (
+                  <button
+                    type="button"
+                    onClick={resetScanner}
+                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-brand-emerald/30 bg-brand-emerald/10 py-3.5 text-xs font-extrabold uppercase tracking-widest text-brand-emerald hover:bg-brand-emerald/20 transition-all duration-300 active:scale-98 cursor-pointer"
+                  >
+                    <HiOutlineRefresh className="h-4 w-4" />
+                    {t("staff.scan_again", "Scan Next Code")}
+                  </button>
+                )}
+              </div>
             </div>
+          )}
 
-            {mode === "qr" && (
-              <div className="space-y-4">
-                <div className="rounded-3xl border border-white/10 bg-zinc-950/80 p-5">
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-400">
-                      <HiOutlineCamera className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h2 className="text-base font-bold text-white">
-                        {t("staff.scan_qr")}
-                      </h2>
-                      <p className="text-xs text-zinc-400">
-                        {t("staff.scan_hint")}
-                      </p>
-                    </div>
+          {mode === "reference" && (
+            <form onSubmit={verifyByReference} className="space-y-4">
+              <div className="rounded-2xl bg-zinc-950/60 p-4 border border-white/5">
+                <div className="mb-4 flex items-center gap-3 text-zinc-200">
+                  <div className="rounded-xl bg-brand-emerald/15 p-3 text-brand-emerald">
+                    <HiOutlineSearch className="h-5 w-5" />
                   </div>
-
-                  <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-black">
-                    <div className="pointer-events-none absolute top-3 left-3 z-10 h-7 w-7 rounded-tl-lg border-t-2 border-l-2 border-emerald-400" />
-                    <div className="pointer-events-none absolute top-3 right-3 z-10 h-7 w-7 rounded-tr-lg border-t-2 border-r-2 border-emerald-400" />
-                    <div className="pointer-events-none absolute bottom-3 left-3 z-10 h-7 w-7 rounded-bl-lg border-b-2 border-l-2 border-emerald-400" />
-                    <div className="pointer-events-none absolute bottom-3 right-3 z-10 h-7 w-7 rounded-br-lg border-b-2 border-r-2 border-emerald-400" />
-                    <div id={scannerId} className="w-full" />
-                  </div>
-
-                  {scannerError && (
-                    <div className="mt-4 flex items-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3">
-                      <HiXCircle className="h-5 w-5 shrink-0 text-red-400" />
-                      <p className="text-sm text-red-200">{scannerError}</p>
-                    </div>
-                  )}
-
-                  {result?.booking && (
-                    <button
-                      type="button"
-                      onClick={resetScanner}
-                      className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 py-3.5 text-sm font-bold text-emerald-300 transition hover:bg-emerald-500/20 active:scale-95"
-                    >
-                      <HiOutlineRefresh className="h-5 w-5" />
-                      {t("staff.scan_again")}
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {mode === "reference" && (
-              <form onSubmit={verifyByReference} className="space-y-4">
-                <div className="rounded-3xl border border-white/10 bg-zinc-950/70 p-4">
-                  <div className="mb-4 flex items-center gap-3 text-zinc-200">
-                    <div className="rounded-2xl bg-emerald-500/15 p-3 text-emerald-300">
-                      <HiOutlineSearch className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-semibold">
-                        {t("staff.enter_reference")}
-                      </h2>
-                      <p className="text-sm text-zinc-400">
-                        {t("staff.reference_help")}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <input
-                      type="text"
-                      value={reference}
-                      onChange={(event) =>
-                        setReference(event.target.value.toUpperCase())
-                      }
-                      placeholder={t("staff.reference_placeholder")}
-                      className="w-full rounded-2xl border border-white/10 bg-zinc-900 px-4 py-4 font-mono text-base text-white outline-none transition focus:border-emerald-400"
-                      dir="ltr"
-                    />
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-emerald-500 disabled:opacity-50"
-                    >
-                      {t("staff.verify_btn")}
-                    </button>
+                  <div>
+                    <h2 className="text-sm font-bold text-white uppercase tracking-wide">
+                      {t("staff.enter_reference", "Enter Reference")}
+                    </h2>
+                    <p className="text-[11px] text-zinc-500 font-medium">
+                      {t("staff.reference_help", "Type booking reference exactly as printed on the email receipt.")}
+                    </p>
                   </div>
                 </div>
-              </form>
-            )}
 
-            {loading && (
-              <div className="mt-5 flex items-center justify-center gap-3 rounded-3xl border border-white/10 bg-white/5 px-5 py-8">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-emerald-500/30 border-t-emerald-400" />
-                <span className="text-sm font-medium text-zinc-300">
-                  {t("staff.loading")}
-                </span>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <input
+                    type="text"
+                    value={reference}
+                    onChange={(event) =>
+                      setReference(event.target.value.toUpperCase())
+                    }
+                    placeholder={t("staff.reference_placeholder", "PRK-XXXXXXXX")}
+                    className="w-full rounded-2xl border border-white/5 bg-zinc-900 px-4 py-3.5 font-mono text-sm text-white outline-none focus:outline-none focus:border-brand-emerald/60 focus:ring-2 focus:ring-brand-emerald/20 transition-all duration-300"
+                    dir="ltr"
+                  />
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="rounded-2xl bg-brand-emerald text-zinc-950 px-6 py-3.5 text-xs font-extrabold uppercase tracking-wider hover:bg-emerald-400 disabled:opacity-50 transition-all duration-300 cursor-pointer active:scale-95 flex-shrink-0"
+                  >
+                    {t("staff.verify_btn", "Verify")}
+                  </button>
+                </div>
               </div>
-            )}
+            </form>
+          )}
 
-            {result ? (
-              <div className="mt-6">
-                <StaffBookingDetails
-                  booking={result.booking}
-                  status={result.status}
-                  message={result.message}
-                  language={lang}
-                />
-              </div>
-            ) : null}
-          </div>
+          {loading && (
+            <div className="mt-5 flex items-center justify-center gap-3 rounded-2xl border border-white/5 bg-zinc-900/40 py-8">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-brand-emerald/30 border-t-brand-emerald shadow-glass-emerald" />
+              <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest font-mono">
+                {t("staff.loading", "Validating Account...")}
+              </span>
+            </div>
+          )}
+
+          {result ? (
+            <div className="mt-6">
+              <StaffBookingDetails
+                booking={result.booking}
+                status={result.status}
+                message={result.message}
+                language={lang}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
-    </div>
+    </StaffLayout>
   );
 }

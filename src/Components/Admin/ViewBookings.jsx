@@ -2,6 +2,9 @@ import { useEffect, useState, useCallback } from "react";
 import { api } from "../../services/api";
 import Pagination from "../Pagination";
 import { useTranslation } from "react-i18next";
+import AdminLayout from "../Layouts/AdminLayout";
+import GlassButton from "../../UI/GlassButton";
+import { FaSyncAlt } from "react-icons/fa";
 
 export default function ViewBookings() {
   const { t } = useTranslation();
@@ -59,102 +62,115 @@ export default function ViewBookings() {
   const getStatusColor = (status) => {
     switch (status) {
       case "Confirmed":
-        return "bg-green-500/20 text-green-400 border-green-500/50";
+        return "bg-green-500/10 text-green-400 border-green-500/30 shadow-glass-emerald";
       case "Pending":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/50";
+        return "bg-amber-500/10 text-amber-400 border-amber-500/30";
       case "Cancelled":
-        return "bg-red-500/20 text-red-400 border-red-500/50";
+        return "bg-red-500/10 text-red-400 border-red-500/30";
       default:
-        return "bg-blue-500/20 text-blue-400 border-blue-500/50";
+        return "bg-blue-500/10 text-blue-400 border-blue-500/30";
     }
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      <div className="min-h-screen bg-background-base flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-cyan shadow-glass-cyan"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 text-white max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-          {t("allBookings")}
-        </h1>
-        <button 
-          onClick={() => fetchBookings(1)}
-          className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg border border-zinc-700 transition-colors"
-        >
-          {t("refresh")}
-        </button>
-      </div>
-
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-lg mb-6">
-          {error}
+    <AdminLayout>
+      <div className="space-y-6">
+        {/* Header Block */}
+        <div className="flex justify-between items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-black bg-gradient-to-r from-brand-cyan to-brand-violet bg-clip-text text-transparent uppercase tracking-wider">
+              {t("allBookings", "All Reservations")}
+            </h1>
+            <p className="text-zinc-500 text-xs mt-0.5 uppercase tracking-widest font-mono font-semibold">
+              {t("admin.bookings_subtitle", "Complete transaction ledger for all vehicle spaces")}
+            </p>
+          </div>
+          
+          <GlassButton 
+            variant="cyan"
+            className="font-bold uppercase text-xs tracking-wider"
+            onClick={() => fetchBookings(1)}
+          >
+            <FaSyncAlt className="w-3 h-3" />
+            {t("refresh")}
+          </GlassButton>
         </div>
-      )}
 
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden backdrop-blur-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-start border-collapse">
-            <thead>
-              <tr className="bg-zinc-800/50 text-zinc-400 text-sm uppercase tracking-wider">
-                <th className="px-6 py-4 font-medium text-start">{t("date")}</th>
-                <th className="px-6 py-4 font-medium text-start">{t("client")}</th>
-                <th className="px-6 py-4 font-medium text-start">{t("ground")}</th>
-                <th className="px-6 py-4 font-medium text-start">{t("time")}</th>
-                <th className="px-6 py-4 font-medium text-start">{t("price")}</th>
-                <th className="px-6 py-4 font-medium text-start">{t("status")}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800">
-              {bookings.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-zinc-500">
-                    {t("noBookings")}
-                  </td>
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-2xl">
+            {error}
+          </div>
+        )}
+
+        {/* Dynamic Glassmorphic Table Container */}
+        <div className="glass-panel rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+          <div className="overflow-x-auto">
+            <table className="w-full text-start border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-white/5 text-zinc-500 uppercase tracking-wider font-mono bg-zinc-950/40">
+                  <th className="px-6 py-4 font-bold text-start">{t("date")}</th>
+                  <th className="px-6 py-4 font-bold text-start">{t("client")}</th>
+                  <th className="px-6 py-4 font-bold text-start">{t("ground")}</th>
+                  <th className="px-6 py-4 font-bold text-start">{t("time")}</th>
+                  <th className="px-6 py-4 font-bold text-start">{t("price")}</th>
+                  <th className="px-6 py-4 font-bold text-end">{t("status")}</th>
                 </tr>
-              ) : (
-                bookings.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-zinc-800/30 transition-colors group">
-                    <td className="px-6 py-4 text-start">
-                      <div className="font-medium">{booking.date}</div>
-                      <div className="text-xs text-zinc-500">{new Date(booking.created_at).toLocaleDateString()}</div>
-                    </td>
-                    <td className="px-6 py-4 text-start">
-                      <div className="font-medium">
-                        {booking.client_first_name ? `${booking.client_first_name} ${booking.client_last_name}` : 
-                         booking.user_first_name ? `${booking.user_first_name} ${booking.user_last_name}` : t("unknown")}
-                      </div>
-                      <div className="text-sm text-zinc-400">{booking.client_phone || t("noPhone")}</div>
-                    </td>
-                    <td className="px-6 py-4 text-start">
-                      <div className="font-medium text-green-400" dir="auto">{booking.ground_name}</div>
-                      <div className="text-sm text-zinc-400" dir="auto">{booking.terrain_name}</div>
-                    </td>
-                    <td className="px-6 py-4 text-zinc-300 text-start">
-                      {booking.start_time.substring(0, 5)} - {booking.end_time.substring(0, 5)}
-                    </td>
-                    <td className="px-6 py-4 font-mono text-blue-400 text-start">
-                      {booking.total_price} {t("booking.currency")}
-                    </td>
-                    <td className="px-6 py-4 text-start">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(booking.status)}`}>
-                        {t(`statuses.${booking.status}`, booking.status)}
-                      </span>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-zinc-300">
+                {bookings.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="px-6 py-16 text-center text-zinc-500 font-mono">
+                      {t("noBookings")}
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  bookings.map((booking) => (
+                    <tr key={booking.id} className="hover:bg-white/5 transition-colors group">
+                      <td className="px-6 py-4 text-start font-mono">
+                        <div className="font-bold text-white text-sm">{booking.date}</div>
+                        <div className="text-[10px] text-zinc-500 mt-0.5">{new Date(booking.created_at).toLocaleDateString()}</div>
+                      </td>
+                      <td className="px-6 py-4 text-start">
+                        <div className="font-semibold text-white">
+                          {booking.client_first_name ? `${booking.client_first_name} ${booking.client_last_name}` : 
+                           booking.user_first_name ? `${booking.user_first_name} ${booking.user_last_name}` : t("unknown")}
+                        </div>
+                        <div className="text-[11px] text-zinc-400 font-mono mt-0.5">{booking.client_phone || t("noPhone")}</div>
+                      </td>
+                      <td className="px-6 py-4 text-start">
+                        <div className="font-bold text-brand-cyan truncate max-w-[200px]" dir="auto">{booking.ground_name}</div>
+                        <div className="text-xs text-zinc-400 mt-0.5 font-mono" dir="auto">{booking.terrain_name}</div>
+                      </td>
+                      <td className="px-6 py-4 text-zinc-300 text-start font-mono">
+                        {booking.start_time.substring(0, 5)} - {booking.end_time.substring(0, 5)}
+                      </td>
+                      <td className="px-6 py-4 font-mono font-bold text-brand-emerald text-start text-sm">
+                        {booking.total_price} {t("booking.currency")}
+                      </td>
+                      <td className="px-6 py-4 text-end">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getStatusColor(booking.status)}`}>
+                          {t(`statuses.${booking.status}`, booking.status)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      <Pagination currentPage={page} lastPage={lastPage} onPageChange={handlePageChange} />
-    </div>
+        {/* Reusable Pagination controls */}
+        <Pagination currentPage={page} lastPage={lastPage} onPageChange={handlePageChange} />
+      </div>
+    </AdminLayout>
   );
 }

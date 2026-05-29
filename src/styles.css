@@ -1,6 +1,28 @@
 @theme {
   --breakpoint-nav-sm: 766px;
   --breakpoint-nav-lg: 1100px;
+   /* Color Overrides & Surface Paint */
+  --color-background-base: #030303;
+  --color-surface-base: #07070a;
+  --color-surface-active: #0f172a;
+  
+  --color-brand-cyan: #06b6d4;
+  --color-brand-blue: #3b82f6;
+  --color-brand-emerald: #10b981;
+  --color-brand-violet: #8b5cf6;
+  
+  --color-status-available: #10b981;
+  --color-status-reserved: #f59e0b;
+  --color-status-occupied: #ef4444;
+  --color-status-maintenance: #64748b;
+
+  /* Glass Shadows & Neon Glows */
+  --shadow-glass-cyan: 0 0 20px rgba(6, 182, 212, 0.35);
+  --shadow-glass-blue: 0 0 20px rgba(59, 130, 246, 0.35);
+  --shadow-glass-violet: 0 0 20px rgba(139, 92, 246, 0.35);
+
+  /* Font Styling */
+  --font-sans: "Outfit", "Inter", "Cairo", sans-serif;
 }
 
 @import "tailwindcss";
@@ -8,6 +30,9 @@
 /* Ensure default browser cursor is used */
 body {
   cursor: auto !important;
+  background-color: #030303;
+  color: #f8fafc;
+  font-family: "Outfit", "Inter", "Cairo", sans-serif;
 }
 
 /* Interactive elements should show pointer cursor */
@@ -21,7 +46,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #1f293758 inset;
+  -webkit-box-shadow: 0 0 0 1000px #09090b inset;
   -webkit-text-fill-color: white;
   transition: background-color 9999s ease-in-out 0s;
 }
@@ -36,3 +61,112 @@ input:-webkit-autofill {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* --- Smart City Design System Utilities --- */
+
+/* Immersive Grid Overlay */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: rgba(7, 7, 10, 0.8) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(6, 182, 212, 0.15) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Outer Accent Glows */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3) !important;
+}
+.glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
+}
+.glow-violet {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3) !important;
+}
+
+/* Smooth Focus Rings */
+.focus-ring {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.5) !important;
+  border-color: #06b6d4 !important;
+}
+
+/* Custom Interactive Scale Springs */
+.interactive-spring {
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+.interactive-spring:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15) !important;
+}
+.interactive-spring:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Active Live Synced Status Pulse Dot */
+.live-pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #06b6d4;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #06b6d4;
+  position: relative;
+}
+.live-pulse-dot::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 1px solid rgba(6, 182, 212, 0.5);
+  border-radius: 50%;
+  animation: livePing 1.8s ease-out infinite;
+}
+
+@keyframes livePing {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Dark Mode Leaflet Map Visual Overrides */
+.dark-leaflet-map {
+  background: #030303 !important;
+}
+
+/* Custom DivIcon Halos */
+.custom-leaflet-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-leaflet-popup .leaflet-popup-content-wrapper {
+  background: rgba(7, 7, 10, 0.9) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(6, 182, 212, 0.2) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8) !important;
+}
+
+.custom-leaflet-popup .leaflet-popup-tip {
+  background: rgba(7, 7, 10, 0.9) !important;
+  border: 1px solid rgba(6, 182, 212, 0.2) !important;
+}
+
+/* Shroud Background Gradients */
+.shroud-cyber {
+  background: radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, rgba(3, 3, 3, 1) 80%);
+}
+
+

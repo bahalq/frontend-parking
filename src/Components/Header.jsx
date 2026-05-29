@@ -108,21 +108,21 @@ export default function Header({ role, isLogin, setIslogin, setRole }) {
   const location = useLocation();
 
   return (
-    <header className="h-[10vh] flex items-center justify-between px-4 text-gray-200 w-full sticky top-0 z-50 backdrop-blur-sm backdrop-brightness-75">
+    <header className="h-[10vh] flex items-center justify-between px-6 text-gray-200 w-full sticky top-0 z-50 border-b border-cyan-500/10 backdrop-blur-sm backdrop-brightness-75 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
       {/* Logo + Staff Info */}
       <div className="flex items-center gap-4">
         <img
           src={logo1}
           alt="Logo"
-          className="h-10 cursor-pointer"
+          className="h-10 cursor-pointer drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]"
           onClick={() => navigate(role === "Staff" ? "/staff/dashboard" : "/")}
         />
         {role === "Staff" && (
           <div className="hidden sm:block min-w-0">
-            <p className="text-sm font-medium text-emerald-400 truncate">
+            <p className="text-sm font-bold text-cyan-400 truncate">
               {groundName}
             </p>
-            <p className="text-xs text-gray-400 truncate">{staffName}</p>
+            <p className="text-xs text-slate-400 truncate">{staffName}</p>
           </div>
         )}
       </div>
@@ -140,13 +140,13 @@ export default function Header({ role, isLogin, setIslogin, setRole }) {
                 to={link.path}
                 className={`relative py-1 px-1 group transition-colors duration-300 ${
                   isActive
-                    ? "text-green-400"
+                    ? "text-cyan-400"
                     : "text-gray-300 hover:text-gray-100"
                 }`}
               >
                 <span>{link.name}</span>
                 <span
-                  className={`absolute bottom-0 left-0 h-0.5 bg-green-400 transition-all duration-300 ${
+                  className={`absolute bottom-0 left-0 h-0.5 bg-cyan-400 transition-all duration-300 ${
                     isActive ? "w-full" : "w-0 group-hover:w-full"
                   }`}
                 ></span>
@@ -211,7 +211,7 @@ export default function Header({ role, isLogin, setIslogin, setRole }) {
             className={({ isActive }) =>
               `w-full text-center py-3 text-lg font-medium rounded-lg transition-all duration-200 ${
                 isActive
-                  ? "text-green-400 bg-green-500/10"
+                  ? "text-cyan-400 bg-cyan-500/10"
                   : "text-gray-300 hover:text-gray-100 hover:bg-white/5"
               }`
             }

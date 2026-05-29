@@ -52,7 +52,7 @@ export default function FeedbackForm({ onSuccess, onClose }) {
   };
 
   const StarRating = ({ interactive = false }) => (
-    <div className="flex gap-1" dir="ltr">
+    <div className="flex gap-1.5 animate-fade-in" dir="ltr">
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
@@ -61,12 +61,12 @@ export default function FeedbackForm({ onSuccess, onClose }) {
           onMouseEnter={() => interactive && setHoverRating(star)}
           onMouseLeave={() => interactive && setHoverRating(0)}
           disabled={!interactive}
-          className={`text-3xl transition-colors ${
-            interactive ? "cursor-pointer hover:scale-110" : "cursor-default"
+          className={`text-3xl transition-transform ${
+            interactive ? "cursor-pointer hover:scale-115 active:scale-95" : "cursor-default"
           } ${
             star <= (interactive ? (hoverRating || rating) : rating)
-              ? "text-yellow-400"
-              : "text-gray-600"
+              ? "text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]"
+              : "text-slate-700"
           }`}
         >
           ★
@@ -77,13 +77,14 @@ export default function FeedbackForm({ onSuccess, onClose }) {
 
   if (success) {
     return (
-      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div className="bg-zinc-900 border border-green-500 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
-          <div className="text-green-500 text-5xl mb-4">✓</div>
-          <h3 className="text-2xl font-bold text-white mb-2">
+      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div className="glass-panel border-cyan-500/35 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent pointer-events-none"></div>
+          <div className="text-cyan-400 text-5xl mb-4 drop-shadow-[0_0_10px_rgba(6,182,212,0.4)]">✓</div>
+          <h3 className="text-2xl font-extrabold text-white tracking-tight mb-2">
             {t("feedback_success_title", "Thank You!")}
           </h3>
-          <p className="text-gray-300">
+          <p className="text-slate-300 text-sm">
             {t("feedback_success_message", "Your feedback has been submitted successfully.")}
           </p>
         </div>
@@ -91,29 +92,32 @@ export default function FeedbackForm({ onSuccess, onClose }) {
     );
   }
 
-   return (
-     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-       <div className="bg-zinc-900 border border-green-500 rounded-2xl p-6 md:p-8 max-w-md w-full shadow-2xl relative max-h-[90vh] overflow-y-auto scrollbar-hide">
-         <button
-           onClick={onClose}
-           className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
-         >
-           ×
-         </button>
+  return (
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+      <div className="glass-panel border-cyan-500/30 rounded-2xl p-6 md:p-8 max-w-md w-full shadow-2xl relative max-h-[90vh] overflow-y-auto scrollbar-hide animate-fade-in-up">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent pointer-events-none"></div>
+        
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-slate-400 hover:text-cyan-400 text-2xl transition-colors font-bold"
+        >
+          ×
+        </button>
 
-        <h2 className="text-2xl font-bold text-white mb-6">
+        <h2 className="text-2xl font-extrabold text-white tracking-tight mb-6 flex items-center gap-2">
+          <span className="w-1.5 h-6 bg-cyan-500 rounded-full"></span>
           {t("feedback_title", "Share Your Feedback")}
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
           {/* Star Rating */}
           <div>
-            <label className="block text-green-400 font-semibold mb-2">
+            <label className="block text-xs font-bold tracking-wider text-slate-500 uppercase mb-2">
               {t("feedback_rating_label", "Rating")} *
             </label>
             <StarRating interactive={true} />
             {rating === 0 && (
-              <p className="text-red-400 text-sm mt-1">
+              <p className="text-red-400 text-xs mt-1">
                 {t("feedback_rating_required", "Please select a rating")}
               </p>
             )}
@@ -121,7 +125,7 @@ export default function FeedbackForm({ onSuccess, onClose }) {
 
           {/* Message */}
           <div>
-            <label className="block text-green-400 font-semibold mb-2">
+            <label className="block text-xs font-bold tracking-wider text-slate-500 uppercase mb-2">
               {t("feedback_message_label", "Your Feedback")} *
             </label>
             <textarea
@@ -129,18 +133,18 @@ export default function FeedbackForm({ onSuccess, onClose }) {
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t("feedback_message_placeholder", "Tell us about your experience...")}
               rows={4}
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full bg-slate-950/65 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300"
               required
               minLength={10}
             />
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="text-slate-500 text-xs mt-1.5 font-medium">
               {message.length}/10 {t("feedback_min_chars", "minimum characters")}
             </p>
           </div>
 
           {/* Name */}
           <div>
-            <label className="block text-green-400 font-semibold mb-2">
+            <label className="block text-xs font-bold tracking-wider text-slate-500 uppercase mb-2">
               {t("feedback_name_label", "Your Name")}
             </label>
             <input
@@ -153,14 +157,14 @@ export default function FeedbackForm({ onSuccess, onClose }) {
                   ? "Votre nom (optionnel)"
                   : "Your name (optional)"
               )}
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full bg-slate-950/65 border border-slate-800 rounded-xl p-3.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300"
               maxLength={255}
             />
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg">
+            <div className="bg-red-950/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -169,7 +173,7 @@ export default function FeedbackForm({ onSuccess, onClose }) {
           <button
             type="submit"
             disabled={loading || rating === 0}
-            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg"
+            className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-900 disabled:text-slate-600 disabled:border-slate-850 disabled:shadow-none text-white font-bold py-3.5 px-6 rounded-xl transition duration-300 shadow-lg hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]"
           >
             {loading
               ? t("feedback_submitting", "Submitting...")

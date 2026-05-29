@@ -54,13 +54,14 @@ export default function Testimonials() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-zinc-950">
+      <section className="py-24 bg-black/40 border-t border-slate-900">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-white mb-12">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
             {t("testimonials_title", "What Our Drivers Say")}
           </h2>
+          <div className="h-1.5 w-20 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full mb-12"></div>
           <div className="flex justify-center items-center h-40">
-            <div className="text-green-500 text-xl animate-pulse">
+            <div className="text-cyan-500 text-xl animate-pulse">
               {t("loading", "Loading...")}
             </div>
           </div>
@@ -71,12 +72,13 @@ export default function Testimonials() {
 
   if (error) {
     return (
-      <section className="py-16 bg-zinc-950">
+      <section className="py-24 bg-black/40 border-t border-slate-900">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-white mb-12">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
             {t("testimonials_title", "What Our Drivers Say")}
           </h2>
-          <p className="text-red-400">{error}</p>
+          <div className="h-1.5 w-20 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full mb-12"></div>
+          <p className="text-red-400 font-medium">{error}</p>
         </div>
       </section>
     );
@@ -87,36 +89,40 @@ export default function Testimonials() {
   }
 
   return (
-    <section className="py-16 bg-zinc-950">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-white mb-12 text-center">
-          {t("testimonials_title", "What Our Drivers Say")}
-        </h2>
+    <section className="py-24 bg-black/40 relative">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-2xl mx-auto mb-16 text-center">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
+            {t("testimonials_title", "What Our Drivers Say")}
+          </h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {feedbacks.map((feedback) => (
             <div
               key={feedback.id}
-              className="bg-zinc-900 rounded-xl p-6 shadow-lg border border-zinc-800 hover:border-green-500/50 transition-all duration-300 transform hover:-translate-y-1"
+              className="glass-panel rounded-xl p-6 shadow-xl relative overflow-hidden group hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all duration-300 transform hover:-translate-y-1"
             >
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100 z-0"></div>
               {/* Star Rating */}
-              <div className="mb-4">
+              <div className="mb-4 relative z-10">
                 <StarRating rating={feedback.rating} />
               </div>
 
               {/* Message */}
-              <p className="text-gray-300 mb-4 line-clamp-4">
+              <p className="text-slate-300 mb-5 line-clamp-4 leading-relaxed text-sm relative z-10 font-medium">
                 "{feedback.message}"
               </p>
 
               {/* User Info */}
-              <div className="flex items-center justify-between border-t border-zinc-800 pt-4">
+              <div className="flex items-center justify-between border-t border-slate-900 pt-4 relative z-10">
                 <div>
-                  <p className="text-green-400 font-semibold">
+                  <p className="text-cyan-400 font-extrabold tracking-wide text-sm">
                     {feedback.name || t("anonymous", "Anonymous")}
                   </p>
                   {feedback.ground_name && (
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-slate-500 text-xs font-semibold mt-0.5">
                       {t("at_ground", "at")} {feedback.ground_name}
                     </p>
                   )}

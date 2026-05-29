@@ -140,52 +140,55 @@ export default function Login({ setIslogin, setRole }) {
         {/* Login Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-zinc-900/80 backdrop-blur-lg border border-zinc-800 text-gray-200 p-8 rounded-2xl shadow-2xl flex flex-col gap-5"
+          className="glass-panel text-gray-200 p-8 rounded-2xl shadow-2xl flex flex-col gap-5 relative overflow-hidden"
         >
-          {/* Email Input */}
-          <div className="relative">
-            <input
-              autoComplete="email"
-              className="w-full bg-zinc-800 border border-zinc-700 hover:border-green-500/50 focus:border-green-500 focus:ring-1 focus:ring-green-500 px-4 py-3 rounded-lg placeholder-gray-500 text-white transition-all duration-200"
-              type="email"
-              placeholder={t("email")}
-              name="email"
-            />
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent pointer-events-none z-0"></div>
+          <div className="relative z-10 flex flex-col gap-5">
+            {/* Email Input */}
+            <div className="relative">
+              <input
+                autoComplete="email"
+                className="w-full bg-slate-950/65 border border-slate-800 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 px-4 py-3 rounded-lg placeholder-slate-500 text-white transition-all duration-200"
+                type="email"
+                placeholder={t("email")}
+                name="email"
+              />
+            </div>
 
-          {/* Password Input */}
-          <div className="relative">
-            <input
-              autoComplete="current-password"
-              className="w-full bg-zinc-800 border border-zinc-700 hover:border-green-500/50 focus:border-green-500 focus:ring-1 focus:ring-green-500 px-4 py-3 pe-10 rounded-lg placeholder-gray-500 text-white transition-all duration-200"
-              type={showPassword ? "text" : "password"}
-              placeholder={t("password")}
-              name="password"
-            />
+            {/* Password Input */}
+            <div className="relative">
+              <input
+                autoComplete="current-password"
+                className="w-full bg-slate-950/65 border border-slate-800 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 px-4 py-3 pe-10 rounded-lg placeholder-slate-500 text-white transition-all duration-200"
+                type={showPassword ? "text" : "password"}
+                placeholder={t("password")}
+                name="password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-cyan-400 transition-colors"
+              >
+                {showPassword ? <LuEyeClosed size={20} /> : <LuEye size={20} />}
+              </button>
+            </div>
+
+            {/* Submit Button */}
             <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute end-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-400 transition-colors"
+              type="submit"
+              disabled={loading}
+              className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-850 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]"
             >
-              {showPassword ? <LuEyeClosed size={20} /> : <LuEye size={20} />}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                  {t("logging_in", "Logging in...")}
+                </span>
+              ) : (
+                t("login")
+              )}
             </button>
           </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-green-500/20"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
-                {t("logging_in", "Logging in...")}
-              </span>
-            ) : (
-              t("login")
-            )}
-          </button>
         </form>
       </div>
     </div>

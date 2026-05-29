@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./Components/Home";
@@ -24,11 +24,11 @@ import StaffDashboard from "./Components/Staff/StaffDashboard";
 import StaffBookingDetail from "./Components/Staff/StaffBookingDetail";
 import ManageStaff from "./Components/Admin/ManageStaff";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
+import DriverDashboard from "./Components/DriverDashboard";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
-  const [isLogin, setIslogin] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState("");
+  const { isLogin, role, loading, setIslogin, setRole } = useAuth();
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -41,30 +41,6 @@ function App() {
     }
   }, [i18n.language]);
 
-  useEffect(() => {
-    const handleAuthError = () => {
-      setIslogin(false);
-      setRole("");
-    };
-    window.addEventListener("auth-error", handleAuthError);
-    return () => window.removeEventListener("auth-error", handleAuthError);
-  }, []);
-
-  useEffect(() => {
-    import("./services/api").then(({ api }) => {
-      api.checkAuth()
-        .then((data) => {
-          if (data.success && data.user) {
-            setIslogin(true);
-            setRole(data.user.role);
-          } else {
-            setIslogin(false);
-            setRole("");
-          }
-        })
-        .finally(() => setLoading(false));
-    });
-  }, []);
   if (loading) {
     return (
       <div className="bg-black h-screen flex items-center justify-center">
@@ -72,14 +48,19 @@ function App() {
       </div>
     );
   }
+
+  const isDashboardRoute = role === "Admin" || role === "Staff";
+
   return (
     <>
-      <Header
-        role={role}
-        isLogin={isLogin}
-        setIslogin={setIslogin}
-        setRole={setRole}
-      />
+      {!isDashboardRoute && (
+        <Header
+          role={role}
+          isLogin={isLogin}
+          setIslogin={setIslogin}
+          setRole={setRole}
+        />
+      )}
         <Routes>
           {/* Admin Login (public, no protection) */}
           <Route
@@ -217,6 +198,7 @@ function App() {
         <Route path="/grounds" element={<GroundsList />} />
         <Route path="/grounds/:id" element={<GroundDetails />} />
         <Route path="/verify" element={<VerifyBookingPage />} />
+        <Route path="/dashboard" element={<DriverDashboard />} />
         <Route path="/" element={<Home isLogin={isLogin} role={role} />} />
 
         <Route

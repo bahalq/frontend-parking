@@ -1,12 +1,16 @@
 import { useTranslation } from "react-i18next";
 import {
-  GiBasketballBall,
-  GiSoccerBall,
-  GiTennisRacket,
-  GiVolleyballBall,
-} from "react-icons/gi";
-import { FaTableTennis } from "react-icons/fa";
-import { TbPlayHandball, TbSwimming } from "react-icons/tb";
+  FaCar,
+  FaMotorcycle,
+  FaChargingStation,
+  FaTruck,
+  FaCarSide,
+  FaShuttleVan,
+  FaWheelchair,
+  FaClock,
+  FaParking,
+  FaCrown,
+} from "react-icons/fa";
 
 export default function StepActivity({ ground, updateData, nextStep }) {
   const { t } = useTranslation();
@@ -33,21 +37,22 @@ export default function StepActivity({ ground, updateData, nextStep }) {
 
   if (availableActivities.length === 0) {
     return (
-      <div className="text-center text-gray-400">
+      <div className="text-center text-slate-400">
         {t("booking.no_activities")}
       </div>
     );
   }
 
   const icons = {
-    Football: <GiSoccerBall />,
-    Tennis: <GiTennisRacket />,
-    Basketball: <GiBasketballBall />,
-    Volleyball: <GiVolleyballBall />,
-    Handball: <TbPlayHandball />,
-    Badminton: <img src="/badminton.png" alt="" srcset="" />,
-    Swimming: <TbSwimming />,
-    "Table Tennis": <FaTableTennis />,
+    Football: <FaCar className="text-cyan-400" />,
+    Tennis: <FaMotorcycle className="text-cyan-400" />,
+    Basketball: <FaChargingStation className="text-cyan-400" />,
+    Volleyball: <FaShuttleVan className="text-cyan-400" />,
+    Handball: <FaCarSide className="text-cyan-400" />,
+    Badminton: <FaWheelchair className="text-cyan-400" />,
+    Swimming: <FaTruck className="text-cyan-400" />,
+    "Table Tennis": <FaClock className="text-cyan-400" />,
+    Padel: <FaCrown className="text-cyan-400" />,
   };
 
   const handleSelect = (id) => {
@@ -56,17 +61,24 @@ export default function StepActivity({ ground, updateData, nextStep }) {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">{t("booking.select_activity")}</h2>
+    <div className="relative">
+      <h2 className="text-xl font-extrabold text-white tracking-tight mb-6 flex items-center gap-2">
+        <span className="w-1.5 h-6 bg-cyan-500 rounded-full"></span>
+        {t("booking.select_activity")}
+      </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {availableActivities.map((act) => (
           <button
             key={act.id}
             onClick={() => handleSelect(act.id)}
-            className="flex flex-col items-center justify-center p-6 bg-zinc-700 hover:bg-green-600 rounded-lg transition-colors border border-transparent hover:border-green-400"
+            className="flex flex-col items-center justify-center p-6 bg-slate-900 border border-slate-800 text-slate-300 rounded-xl transition-all duration-300 hover:border-cyan-500/40 hover:bg-cyan-950/20 hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.15)] interactive-spring"
           >
-            <span className="text-4xl mb-2">{icons[act.name]}</span>
-            <span className="font-semibold">{t(`booking.activities.${act.name}`, act.name)}</span>
+            <span className="text-4xl mb-3 drop-shadow-[0_0_8px_rgba(6,182,212,0.3)]">
+              {icons[act.name] || <FaParking className="text-cyan-400" />}
+            </span>
+            <span className="font-semibold text-sm tracking-wide">
+              {t(`booking.activities.${act.name}`, act.name)}
+            </span>
           </button>
         ))}
       </div>
