@@ -5,14 +5,20 @@ import { useRealtime } from "../../context/RealtimeContext";
 import { useAuth } from "../../context/AuthContext";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { HiMenu, HiX } from "react-icons/hi";
-import { 
-  FaChartPie, FaPlusCircle, FaWarehouse, 
-  FaUserFriends, FaHistory, FaCheckCircle, 
-  FaUsersCog, FaPowerOff 
+import {
+  FaChartPie,
+  FaPlusCircle,
+  FaWarehouse,
+  FaUserFriends,
+  FaHistory,
+  FaCheckCircle,
+  FaUsersCog,
+  FaPowerOff,
 } from "react-icons/fa";
 
 export default function AdminLayout({ children }) {
   const { t, i18n } = useTranslation();
+  const logo = new URL("/favicon.svg", import.meta.url).href;
   const navigate = useNavigate();
   const location = useLocation();
   const { isLive } = useRealtime();
@@ -20,7 +26,9 @@ export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isRTL = i18n.language === "ar";
-  const adminName = user ? `${user.first_name || ""} ${user.last_name || ""}`.trim() : t("admin", "Admin");
+  const adminName = user
+    ? `${user.first_name || ""} ${user.last_name || ""}`.trim()
+    : t("admin", "Admin");
 
   const navigationLinks = [
     {
@@ -66,14 +74,24 @@ export default function AdminLayout({ children }) {
   };
 
   return (
-    <div className="min-h-screen bg-background-base text-gray-200 flex" dir={isRTL ? "rtl" : "ltr"}>
+    <div
+      className="min-h-screen bg-background-base text-gray-200 flex"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       {/* DESKTOP SIDEBAR */}
-      <aside className={`hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md z-30 transition-all duration-300 ${isRTL ? "border-l border-r-0" : "border-r"}`}>
+      <aside
+        className={`hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md z-30 transition-all duration-300 ${isRTL ? "border-l border-r-0" : "border-r"}`}
+      >
         <div className="h-[10vh] flex items-center justify-between px-6 border-b border-white/5">
           <div className="flex items-center gap-2">
-            <span className="text-xl font-black bg-gradient-to-r from-brand-cyan to-brand-violet bg-clip-text text-transparent uppercase tracking-wider">
-              {t("brand", "ParkSmart")}
-            </span>
+            <img
+              src={logo}
+              alt="Logo"
+              className="h-10 cursor-pointer drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]"
+              onClick={() =>
+                navigate(role === "Staff" ? "/staff/dashboard" : "/")
+              }
+            />
             <span className="text-[10px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded font-mono font-bold uppercase">
               {t("admin", "Admin")}
             </span>
@@ -114,7 +132,9 @@ export default function AdminLayout({ children }) {
       {/* MOBILE DRAWER */}
       <div
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 lg:hidden ${
-          sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          sidebarOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setSidebarOpen(false)}
       />
@@ -125,15 +145,18 @@ export default function AdminLayout({ children }) {
           sidebarOpen
             ? "translate-x-0"
             : isRTL
-            ? "translate-x-full"
-            : "-translate-x-full"
+              ? "translate-x-full"
+              : "-translate-x-full"
         }`}
       >
         <div className="h-[10vh] flex items-center justify-between px-6 border-b border-white/5">
           <span className="text-lg font-black bg-gradient-to-r from-brand-cyan to-brand-violet bg-clip-text text-transparent uppercase tracking-wider">
             {t("brand", "ParkSmart")}
           </span>
-          <button onClick={() => setSidebarOpen(false)} className="text-zinc-400 hover:text-white text-xl">
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="text-zinc-400 hover:text-white text-xl"
+          >
             <HiX />
           </button>
         </div>
@@ -185,9 +208,13 @@ export default function AdminLayout({ children }) {
               <HiMenu />
             </button>
             <div className="flex items-center gap-2">
-              <span className={`live-pulse-dot ${isLive ? "bg-emerald-400 shadow-glass-emerald" : "bg-zinc-600 shadow-none"}`}></span>
+              <span
+                className={`live-pulse-dot ${isLive ? "bg-emerald-400 shadow-glass-emerald" : "bg-zinc-600 shadow-none"}`}
+              ></span>
               <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 font-mono">
-                {isLive ? t("booking.available", "Live Synced") : t("loading", "Standby")}
+                {isLive
+                  ? t("booking.available", "Live Synced")
+                  : t("loading", "Standby")}
               </span>
             </div>
           </div>
@@ -207,9 +234,7 @@ export default function AdminLayout({ children }) {
 
         {/* PAGE CONTENT PANEL */}
         <main className="flex-1 p-6 md:p-8 overflow-y-auto bg-background-base">
-          <div className="max-w-7xl mx-auto animate-fade-in">
-            {children}
-          </div>
+          <div className="max-w-7xl mx-auto animate-fade-in">{children}</div>
         </main>
       </div>
     </div>

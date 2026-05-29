@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./Components/Home";
 import Login from "./Components/Login";
 import "./styles.css";
-import Logout from "./Components/Logout";
 import LanguageSwitcher from "./Components/LanguageSwitcher";
 import NotFound from "./Components/NotFound";
 import { useTranslation } from "react-i18next";
@@ -30,6 +29,7 @@ import { useAuth } from "./context/AuthContext";
 function App() {
   const { isLogin, role, loading, setIslogin, setRole } = useAuth();
   const { i18n } = useTranslation();
+  const location = useLocation();
 
   useEffect(() => {
     if (i18n.language === "ar") {
@@ -49,7 +49,8 @@ function App() {
     );
   }
 
-  const isDashboardRoute = role === "Admin" || role === "Staff";
+  // Hide the main Header on admin and staff dashboard routes because they have their own layouts
+  const isDashboardRoute = location.pathname.startsWith("/admin") || location.pathname.startsWith("/staff");
 
   return (
     <>

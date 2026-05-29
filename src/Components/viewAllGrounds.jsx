@@ -5,6 +5,7 @@ import ImageCarousel from "./ImageCarousel";
 import Pagination from "./Pagination";
 import { api } from "../services/api";
 import Swal from "../utils/swal";
+import AdminLayout from "./Layouts/AdminLayout";
 
 export default function ViewGrounds() {
   const { t } = useTranslation();
@@ -129,71 +130,84 @@ export default function ViewGrounds() {
     }
   };
 
-  if (loading) return <p className="p-4 text-white text-center">{t("loading")}</p>;
-  if (error) return <p className="p-4 text-red-500 text-center">{error}</p>;
+  if (loading) return (
+    <AdminLayout>
+      <p className="p-4 text-white text-center">{t("loading")}</p>
+    </AdminLayout>
+  );
+
+  if (error) return (
+    <AdminLayout>
+      <p className="p-4 text-red-500 text-center">{error}</p>
+    </AdminLayout>
+  );
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-3 py-4 text-white sm:px-6">
-      <h1 className="mb-6 text-2xl font-bold sm:text-3xl">{t("viewGrounds")}</h1>
+    <AdminLayout>
+      <div className="mx-auto w-full max-w-6xl px-3 py-4 text-white sm:px-6">
+        <h1 className="mb-6 text-2xl font-bold sm:text-3xl text-start">{t("viewGrounds")}</h1>
 
-      {grounds.length === 0 && <p className="text-center text-zinc-500">{t("noGrounds")}</p>}
+        {grounds.length === 0 && <p className="text-center text-zinc-500">{t("noGrounds")}</p>}
 
-      <div className="grid gap-4 sm:gap-5">
-        {grounds.map((g) => (
-          <div
-            key={g.id}
-            className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950/80 shadow-lg"
-          >
-            <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-[320px] md:flex-shrink-0">
-                {g.images && g.images.length > 0 ? (
-                  <ImageCarousel images={g.images} />
-                ) : (
-                  <div className="flex h-52 items-center justify-center bg-zinc-900 text-sm text-zinc-400">
-                    {t("no_images")}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-1 flex-col gap-4 p-3 sm:p-5">
-                <div className="space-y-2">
-                  <h2 className="break-words text-lg font-semibold leading-tight sm:text-xl text-start">{g.name}</h2>
-                  <p className="break-words text-sm text-zinc-300 sm:text-base text-start">{g.city}</p>
-
-                  {g.latitude && g.longitude && (
-                    <a
-                      href={`https://www.google.com/maps?q=${g.latitude},${g.longitude}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex w-fit text-sm text-blue-400 underline underline-offset-2 hover:text-blue-300"
-                    >
-                      {t("viewOnMap")}
-                    </a>
+        <div className="grid gap-4 sm:gap-5">
+          {grounds.map((g) => (
+            <div
+              key={g.id}
+              className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950/80 shadow-lg"
+            >
+              <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-[320px] md:flex-shrink-0">
+                  {g.images && g.images.length > 0 ? (
+                    <ImageCarousel images={g.images} />
+                  ) : (
+                    <div className="flex h-52 items-center justify-center bg-zinc-900 text-sm text-zinc-400">
+                      {t("no_images")}
+                    </div>
                   )}
                 </div>
 
-                <div className="mt-auto grid grid-cols-1 gap-3 sm:flex sm:flex-row sm:flex-wrap">
-                  <button
-                    onClick={() => handleDelete(g.id)}
-                    className="min-h-11 w-full rounded-lg border border-red-900 bg-red-950 px-4 py-2 text-sm font-medium text-white transition hover:translate-y-0.5 sm:w-auto"
-                  >
-                    {t("delete")}
-                  </button>
+                <div className="flex flex-1 flex-col gap-4 p-3 sm:p-5">
+                  <div className="space-y-2">
+                    <h2 className="break-words text-lg font-semibold leading-tight sm:text-xl text-start">{g.name}</h2>
+                    <p className="break-words text-sm text-zinc-300 sm:text-base text-start">{g.city}</p>
 
-                  <button
-                    onClick={() => navigate(`/admin/grounds/${g.id}/terrains`)}
-                    className="min-h-11 w-full rounded-lg border border-green-900 bg-green-950 px-4 py-2 text-sm font-medium text-white transition hover:translate-y-0.5 sm:w-auto"
-                  >
-                    {t("booking.manage_terrains.title")}
-                  </button>
+                    {g.latitude && g.longitude && (
+                      <div className="flex text-start">
+                        <a
+                          href={`https://www.google.com/maps?q=${g.latitude},${g.longitude}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex w-fit text-sm text-blue-400 underline underline-offset-2 hover:text-blue-300"
+                        >
+                          {t("viewOnMap")}
+                        </a>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-auto grid grid-cols-1 gap-3 sm:flex sm:flex-row sm:flex-wrap">
+                    <button
+                      onClick={() => handleDelete(g.id)}
+                      className="min-h-11 w-full rounded-lg border border-red-900 bg-red-950 px-4 py-2 text-sm font-medium text-white transition hover:translate-y-0.5 sm:w-auto"
+                    >
+                      {t("delete")}
+                    </button>
+
+                    <button
+                      onClick={() => navigate(`/admin/grounds/${g.id}/terrains`)}
+                      className="min-h-11 w-full rounded-lg border border-green-900 bg-green-950 px-4 py-2 text-sm font-medium text-white transition hover:translate-y-0.5 sm:w-auto"
+                    >
+                      {t("booking.manage_terrains.title")}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <Pagination currentPage={page} lastPage={lastPage} onPageChange={handlePageChange} />
-    </div>
+        <Pagination currentPage={page} lastPage={lastPage} onPageChange={handlePageChange} />
+      </div>
+    </AdminLayout>
   );
 }

@@ -30,7 +30,7 @@
 /* Ensure default browser cursor is used */
 body {
   cursor: auto !important;
-  background-color: #030303;
+  background-color: transparent;
   color: #f8fafc;
   font-family: "Outfit", "Inter", "Cairo", sans-serif;
 }
