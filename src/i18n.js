@@ -184,6 +184,7 @@ const resources = {
       tooManyRequests: "Too Many Requests",
       forbidden: "Access Denied",
       errors: {
+        error: "Error",
         unauthorized: "You are not authorized to perform this action",
         field_required: "{{field}} is required",
         invalid_data: "Invalid data sent",
@@ -394,10 +395,7 @@ const resources = {
       pending_message: "This reservation is still pending confirmation.",
       cancelled_message: "This reservation has been cancelled.",
       try_again: "Try Again",
-      errors: {
-        error: "Error",
-        server_error: "Something went wrong. Please try again.",
-      },
+
       "statuses.Confirmed": "Confirmed",
       "statuses.Cancelled": "Cancelled",
       "statuses.Pending": "Pending",
@@ -585,6 +583,7 @@ const resources = {
       tooManyRequests: "Trop de Requêtes",
       forbidden: "Accès Interdit",
       errors: {
+        error: "Erreur",
         unauthorized: "Vous n'êtes pas autorisé à effectuer cette action",
         field_required: "{{field}} est obligatoire",
         invalid_data: "Données envoyées non valides",
@@ -795,10 +794,7 @@ const resources = {
       pending_message: "Cette réservation attend toujours le code de confirmation.",
       cancelled_message: "Cette réservation a été annulée.",
       try_again: "Réessayer",
-      errors: {
-        error: "Erreur",
-        server_error: "Quelque chose s'est mal passé. Réessayez.",
-      },
+
       "statuses.Confirmed": "Confirmée",
       "statuses.Cancelled": "Annulée",
       "statuses.Pending": "En attente",
@@ -983,6 +979,7 @@ const resources = {
       tooManyRequests: "طلبات كثيرة جداً",
       forbidden: "وصول محظور",
       errors: {
+        error: "خطأ",
         unauthorized: "غير مصرح لك بالقيام بهذا الإجراء",
         field_required: "{{field}} مطلوب",
         invalid_data: "البيانات المرسلة غير صالحة",
@@ -1193,10 +1190,6 @@ const resources = {
       pending_message: "هذا الحجز لا يزال بانتظار إدخال رمز التحقق.",
       cancelled_message: "تم إلغاء هذا الحجز.",
       try_again: "إعادة المحاولة",
-      errors: {
-        error: "خطأ",
-        server_error: "حدث خطأ ما. يرجى إعادة المحاولة.",
-      },
       "statuses.Confirmed": "مؤكد",
       "statuses.Cancelled": "ملغى",
       "statuses.Pending": "قيد الانتظار",
