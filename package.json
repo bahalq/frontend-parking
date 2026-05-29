@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://bahalq.github.io/frontend-last/",
+  "homepage": "https://bahalq.github.io/frontend-parking/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
