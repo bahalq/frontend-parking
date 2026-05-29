@@ -41,7 +41,17 @@ const fetchAPI = async (endpoint, options = {}) => {
   };
 
   const url = buildApiUrl(endpoint);
-  const response = await fetch(url, config);
+  let response;
+
+  try {
+    response = await fetch(url, config);
+  } catch (error) {
+    return {
+      success: false,
+      message: "Unable to reach the API. Please check that the Laravel server is running.",
+      status: 0,
+    };
+  }
 
   if (response.status === 401) {
     localStorage.removeItem("auth_token");

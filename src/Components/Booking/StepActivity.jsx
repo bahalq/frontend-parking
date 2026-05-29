@@ -3,20 +3,17 @@ import {
   FaCar,
   FaMotorcycle,
   FaChargingStation,
-  FaTruck,
   FaCarSide,
   FaShuttleVan,
   FaWheelchair,
-  FaClock,
   FaParking,
-  FaCrown,
 } from "react-icons/fa";
 
 export default function StepActivity({ ground, updateData, nextStep }) {
   const { t } = useTranslation();
-  const activitiesFromGround = Array.isArray(ground.activities) ? ground.activities : [];
+  const activitiesFromGround = Array.isArray(ground?.activities) ? ground.activities : [];
 
-  const activitiesFromTerrains = Array.isArray(ground.terrains)
+  const activitiesFromTerrains = Array.isArray(ground?.terrains)
     ? Array.from(
         new Map(
           ground.terrains
@@ -26,6 +23,7 @@ export default function StepActivity({ ground, updateData, nextStep }) {
               {
                 id: t.activity_id,
                 name: t.activity_name || `Activity ${t.activity_id}`,
+                icon: t.activity_icon,
               },
             ]),
         ).values(),
@@ -37,22 +35,24 @@ export default function StepActivity({ ground, updateData, nextStep }) {
 
   if (availableActivities.length === 0) {
     return (
-      <div className="text-center text-slate-400">
-        {t("booking.no_activities")}
+      <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 p-5 text-center text-amber-100">
+        <p className="font-semibold">{t("booking.no_activities")}</p>
+        <p className="mt-2 text-sm text-amber-100/75">
+          {t("booking.no_activities_hint", "This parking zone has no linked spots or vehicle categories yet. Please refresh or choose another zone.")}
+        </p>
       </div>
     );
   }
 
   const icons = {
-    Football: <FaCar className="text-cyan-400" />,
-    Tennis: <FaMotorcycle className="text-cyan-400" />,
-    Basketball: <FaChargingStation className="text-cyan-400" />,
-    Volleyball: <FaShuttleVan className="text-cyan-400" />,
-    Handball: <FaCarSide className="text-cyan-400" />,
-    Badminton: <FaWheelchair className="text-cyan-400" />,
-    Swimming: <FaTruck className="text-cyan-400" />,
-    "Table Tennis": <FaClock className="text-cyan-400" />,
-    Padel: <FaCrown className="text-cyan-400" />,
+    Compact: <FaCar className="text-cyan-300" />,
+    Sedan: <FaCarSide className="text-cyan-300" />,
+    SUV: <FaShuttleVan className="text-cyan-300" />,
+    "Electric Vehicle": <FaChargingStation className="text-cyan-300" />,
+    Motorcycle: <FaMotorcycle className="text-cyan-300" />,
+    "Disabled Access": <FaWheelchair className="text-cyan-300" />,
+    EV: <FaChargingStation className="text-cyan-300" />,
+    Accessible: <FaWheelchair className="text-cyan-300" />,
   };
 
   const handleSelect = (id) => {
@@ -71,14 +71,24 @@ export default function StepActivity({ ground, updateData, nextStep }) {
           <button
             key={act.id}
             onClick={() => handleSelect(act.id)}
-            className="flex flex-col items-center justify-center p-6 bg-slate-900 border border-slate-800 text-slate-300 rounded-xl transition-all duration-300 hover:border-cyan-500/40 hover:bg-cyan-950/20 hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.15)] interactive-spring"
+            className="group flex min-h-40 flex-col items-center justify-center rounded-xl border border-cyan-400/20 bg-slate-950/80 p-5 text-slate-200 shadow-[0_0_22px_rgba(6,182,212,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/60 hover:bg-cyan-950/25 hover:text-white hover:shadow-[0_0_28px_rgba(6,182,212,0.22)] interactive-spring"
           >
-            <span className="text-4xl mb-3 drop-shadow-[0_0_8px_rgba(6,182,212,0.3)]">
+            <span className="text-4xl mb-3 drop-shadow-[0_0_10px_rgba(6,182,212,0.45)] transition-transform duration-300 group-hover:scale-110">
               {icons[act.name] || <FaParking className="text-cyan-400" />}
             </span>
             <span className="font-semibold text-sm tracking-wide">
               {t(`booking.activities.${act.name}`, act.name)}
             </span>
+            {typeof act.spots_count !== "undefined" && (
+              <span className="mt-2 text-xs text-cyan-100/70">
+                {act.spots_count} {t("booking.spots", "spots")}
+              </span>
+            )}
+            {typeof act.min_price_per_hour !== "undefined" && (
+              <span className="mt-1 text-xs font-semibold text-cyan-300">
+                {act.min_price_per_hour} {t("booking.currency")}/{t("time").toLowerCase()}
+              </span>
+            )}
           </button>
         ))}
       </div>

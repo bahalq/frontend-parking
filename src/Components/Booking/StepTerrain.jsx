@@ -6,16 +6,42 @@ export default function StepTerrain({ ground, data, updateData, nextStep, prevSt
   const { t, i18n } = useTranslation();
   const [terrains, setTerrains] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+
     if (data.activityId) {
+      setLoading(true);
+      setError("");
       api.getTerrainsByActivity(ground.id, data.activityId)
         .then((res) => {
-          if (res.success) setTerrains(res.terrains);
+          if (!isMounted) return;
+
+          if (res.success) {
+            setTerrains(Array.isArray(res.terrains) ? res.terrains : []);
+            return;
+          }
+
+          setTerrains([]);
+          setError(res.message || t("booking.load_terrains_error", "Unable to load spots for this category."));
         })
-        .finally(() => setLoading(false));
+        .catch(() => {
+          if (!isMounted) return;
+          setTerrains([]);
+          setError(t("booking.load_terrains_error", "Unable to load spots for this category."));
+        })
+        .finally(() => {
+          if (isMounted) setLoading(false);
+        });
+    } else {
+      setLoading(false);
     }
-  }, [ground.id, data.activityId]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [ground.id, data.activityId, t]);
 
   const handleSelect = (terrain) => {
     updateData("terrainId", terrain.id);
@@ -23,7 +49,7 @@ export default function StepTerrain({ ground, data, updateData, nextStep, prevSt
     nextStep();
   };
 
-  if (loading) return <div className="text-cyan-500 animate-pulse">{t("booking.loading_terrains")}</div>;
+  if (loading) return <div className="rounded-xl border border-cyan-400/20 bg-cyan-500/10 p-5 text-cyan-200 animate-pulse">{t("booking.loading_terrains")}</div>;
 
   return (
     <div className="relative">
@@ -32,8 +58,12 @@ export default function StepTerrain({ ground, data, updateData, nextStep, prevSt
         {t("booking.select_terrain")}
       </h2>
       
-      {terrains.length === 0 ? (
-        <div className="text-slate-400">{t("booking.no_terrains")}</div>
+      {error ? (
+        <div className="rounded-xl border border-red-400/30 bg-red-500/10 p-5 text-red-100">{error}</div>
+      ) : terrains.length === 0 ? (
+        <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 p-5 text-amber-100">
+          {t("booking.no_terrains")}
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {terrains.map((terrain) => (

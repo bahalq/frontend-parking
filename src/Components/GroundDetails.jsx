@@ -12,15 +12,28 @@ export default function GroundDetails() {
   const { id } = useParams();
   const [ground, setGround] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    setLoading(true);
+    setError("");
     api
       .getGroundDetails(id)
       .then((data) => {
-        if (data.success) setGround(data.ground);
+        if (data.success) {
+          setGround(data.ground);
+          return;
+        }
+
+        setGround(null);
+        setError(data.message || t("ground_not_found"));
+      })
+      .catch(() => {
+        setGround(null);
+        setError(t("api_error", "Unable to load parking zone data."));
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, t]);
 
   if (loading)
     return (
@@ -30,7 +43,7 @@ export default function GroundDetails() {
     );
   if (!ground)
     return (
-      <div className="p-10 text-center text-red-500">{t("ground_not_found")}</div>
+      <div className="p-10 text-center text-red-500">{error || t("ground_not_found")}</div>
     );
 
   const groundImages = getGroundImages(ground);
