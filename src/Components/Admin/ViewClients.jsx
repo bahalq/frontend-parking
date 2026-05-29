@@ -44,7 +44,7 @@ export default function ViewClients() {
         console.error(err);
       })
       .finally(() => setLoading(false));
-  }, [t]);
+  }, []);
 
   useEffect(() => {
     fetchClients(1);

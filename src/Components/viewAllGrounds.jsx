@@ -48,7 +48,7 @@ export default function ViewGrounds() {
         setError(t("errors.server_error"));
       })
       .finally(() => setLoading(false));
-  }, [t]);
+  }, []);
 
   useEffect(() => {
     fetchGrounds(1);

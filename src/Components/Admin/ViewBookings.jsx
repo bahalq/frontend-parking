@@ -46,7 +46,7 @@ export default function ViewBookings() {
         console.error(err);
       })
       .finally(() => setLoading(false));
-  }, [t]);
+  }, []);
 
   useEffect(() => {
     fetchBookings(1);
