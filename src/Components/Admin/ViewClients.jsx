@@ -3,6 +3,7 @@ import { api } from "../../services/api";
 import Pagination from "../Pagination";
 import { useTranslation } from "react-i18next";
 import AdminLayout from "../Layouts/AdminLayout";
+import GlassButton from "../../UI/GlassButton";
 
 export default function ViewClients() {
   const { t } = useTranslation();

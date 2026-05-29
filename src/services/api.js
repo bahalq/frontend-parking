@@ -234,7 +234,7 @@ export const api = {
   getStaffBooking: (id) => fetchAPI(`staff/booking/${id}`),
 
   // Admin Dashboard
-  getAdminStats: () => fetchAPI("admin/stats"),
+  getAdminDashboardStats: () => fetchAPI("admin/stats"),
 
   // Admin staff management
   getAdminStaffList: (page = 1) => fetchAPI(`admin/staff?page=${page}`),
