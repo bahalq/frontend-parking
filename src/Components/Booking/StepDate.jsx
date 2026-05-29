@@ -7,17 +7,47 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
   const { t, i18n } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [availability, setAvailability] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1; // 1-12
 
   useEffect(() => {
+    let isMounted = true;
+
     if (data.terrainId) {
-      api.getMonthAvailability(data.terrainId, year, month).then((res) => {
-        if (res.success) setAvailability(res);
-      });
+      setLoading(true);
+      setError("");
+      setAvailability(null);
+
+      api.getMonthAvailability(data.terrainId, year, month)
+        .then((res) => {
+          if (!isMounted) return;
+
+          if (res.success) {
+            setAvailability(res);
+            return;
+          }
+
+          setError(res.message || t("booking.load_dates_error", "Unable to load date availability."));
+        })
+        .catch(() => {
+          if (isMounted) {
+            setError(t("booking.load_dates_error", "Unable to load date availability."));
+          }
+        })
+        .finally(() => {
+          if (isMounted) setLoading(false);
+        });
+    } else {
+      setLoading(false);
     }
-  }, [data.terrainId, year, month]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [data.terrainId, year, month, t]);
 
   const daysInMonth = new Date(year, month, 0).getDate();
   const firstDayOfWeek = new Date(year, month - 1, 1).getDay(); // 0-6
@@ -29,27 +59,30 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
   };
 
   const getDayStatus = (day) => {
-    if (!availability) return "loading";
-
-    // Check Date
     const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     const dateObj = new Date(dateStr);
-    const dayOfWeek = dateObj.getDay(); // 0-6
 
-    // 1. Check Capacity
-    const capacity = availability.capacity_map[dayOfWeek] || 0;
-    if (capacity === 0) return "disabled"; // Closed day
-
-    // 2. Check Bookings
-    const booked = availability.bookings_map[dateStr] || 0;
-    if (booked >= capacity) return "full"; // Red
-
-    // 3. Past Date check
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (dateObj < today) return "disabled";
 
-    return "available"; // Cyan
+    if (loading || !availability) return "loading";
+
+    const availabilityMap = availability.availability || {};
+    if (Object.prototype.hasOwnProperty.call(availabilityMap, dateStr)) {
+      return availabilityMap[dateStr] ? "available" : "full";
+    }
+
+    const dayOfWeek = dateObj.getDay();
+    const capacityMap = availability.capacity_map || {};
+    const bookingsMap = availability.bookings_map || {};
+    const capacity = Number(capacityMap[dayOfWeek] ?? 14);
+    const booked = Number(bookingsMap[dateStr] ?? 0);
+
+    if (capacity <= 0) return "disabled";
+    if (booked >= capacity) return "full";
+
+    return "available";
   };
 
   const changeMonth = (delta) => {
@@ -105,6 +138,12 @@ export default function StepDate({ data, updateData, nextStep, prevStep }) {
           <span className="text-slate-500">{t("booking.closed")}</span>
         </div>
       </div>
+
+      {error && (
+        <div className="mb-6 rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm font-semibold text-red-100">
+          {error}
+        </div>
+      )}
 
       <div className="flex justify-between items-center mb-6 bg-slate-900 border border-slate-800 p-2.5 rounded-xl">
         <button
