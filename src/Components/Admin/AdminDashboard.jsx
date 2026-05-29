@@ -36,7 +36,7 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background-base flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-cyan shadow-glass-cyan"></div>
       </div>
     );
@@ -156,16 +156,16 @@ export default function AdminDashboard() {
                   stroke="#71717a" 
                   width={120} 
                   tickLine={false}
-                  style={{ fontSize: "11px" }}
-                  tick={(props) => (
+                  tick={({ x, y, payload }) => (
                     <text 
-                      {...props} 
-                      x={props.x - 5} 
+                      x={x - 5} 
+                      y={y} 
+                      dy={4}
                       textAnchor="end" 
                       fill="#a1a1aa" 
-                      style={{ direction: "ltr", unicodeBidi: "embed" }}
+                      style={{ direction: "ltr", unicodeBidi: "embed", fontSize: "11px" }}
                     >
-                      {props.payload.value}
+                      {payload.value}
                     </text>
                   )}
                 />

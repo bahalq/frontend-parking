@@ -114,14 +114,14 @@ export default function Home({ isLogin, role }) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-slate-200 grid-bg shroud-cyber overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-slate-200 grid-bg shroud-cyber overflow-x-hidden">
       {/* Hero Section */}
       <section
         className="relative h-screen bg-cover bg-center flex items-center justify-center text-center p-4"
         style={{ backgroundImage: `url(${heroBackground})` }}
       >
         {/* Obsidian Glass Gradient Shroud */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/80 to-black z-0"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-transparent z-0"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent z-0"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4">
@@ -153,11 +153,11 @@ export default function Home({ isLogin, role }) {
         </div>
 
         {/* Diagonal Bottom Grid Shutter Accent */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-transparent to-transparent pointer-events-none"></div>
       </section>
 
       {/* How It Works Section */}
-      <section className="py-24 relative bg-black backdrop-blur-md border-y border-slate-900">
+      <section className="py-24 relative bg-transparent backdrop-blur-md border-y border-slate-900/50">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-2xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -168,7 +168,7 @@ export default function Home({ isLogin, role }) {
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Step 1 */}
-            <div className="flex flex-col items-center p-8 bg-slate-950/80 rounded-2xl border border-slate-900 shadow-xl interactive-spring">
+            <div className="flex flex-col items-center p-8 bg-slate-950/40 backdrop-blur-sm rounded-2xl border border-slate-900 shadow-xl interactive-spring">
               {analyzeIcon}
               <h3 className="text-xl font-bold text-cyan-400 mb-3">
                 {t("how_it_works_step1_title")}
@@ -179,7 +179,7 @@ export default function Home({ isLogin, role }) {
             </div>
 
             {/* Step 2 */}
-            <div className="flex flex-col items-center p-8 bg-slate-950/80 rounded-2xl border border-slate-900 shadow-xl interactive-spring">
+            <div className="flex flex-col items-center p-8 bg-slate-950/40 backdrop-blur-sm rounded-2xl border border-slate-900 shadow-xl interactive-spring">
               {reserveIcon}
               <h3 className="text-xl font-bold text-cyan-400 mb-3">
                 {t("how_it_works_step2_title")}
@@ -190,7 +190,7 @@ export default function Home({ isLogin, role }) {
             </div>
 
             {/* Step 3 */}
-            <div className="flex flex-col items-center p-8 bg-slate-950/80 rounded-2xl border border-slate-900 shadow-xl interactive-spring">
+            <div className="flex flex-col items-center p-8 bg-slate-950/40 backdrop-blur-sm rounded-2xl border border-slate-900 shadow-xl interactive-spring">
               {verifyIcon}
               <h3 className="text-xl font-bold text-cyan-400 mb-3">
                 {t("how_it_works_step3_title")}
@@ -204,7 +204,7 @@ export default function Home({ isLogin, role }) {
       </section>
 
       {/* Activities / Vehicle Categories Section */}
-      <section className="py-24 relative bg-black">
+      <section className="py-24 relative bg-transparent">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-2xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -226,7 +226,7 @@ export default function Home({ isLogin, role }) {
               {activities.map((activity, index) => (
                 <div
                   key={activity.id}
-                  className="flex flex-col items-center justify-center p-6 bg-slate-950/90 rounded-xl border border-slate-900 shadow-md transition-all duration-300 cursor-pointer hover:border-cyan-500/40 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]"
+                  className="flex flex-col items-center justify-center p-6 bg-slate-950/40 backdrop-blur-sm rounded-xl border border-slate-900 shadow-md transition-all duration-300 cursor-pointer hover:border-cyan-500/40 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]"
                   style={{ transitionDelay: `${index * 40}ms` }}
                 >
                   {getActivityIcon(activity.name) || (
@@ -245,7 +245,7 @@ export default function Home({ isLogin, role }) {
       </section>
 
       {/* Testimonials Section */}
-      <div className="bg-black border-t border-slate-900">
+      <div className="bg-transparent border-t border-slate-900/50">
         <Testimonials />
       </div>
 

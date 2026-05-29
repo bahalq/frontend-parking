@@ -22,7 +22,7 @@ export default function AdminLayout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { isLive } = useRealtime();
-  const { logout, user } = useAuth();
+  const { logout, user, role } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isRTL = i18n.language === "ar";
@@ -75,12 +75,12 @@ export default function AdminLayout({ children }) {
 
   return (
     <div
-      className="min-h-screen bg-background-base text-gray-200 flex"
+      className="min-h-screen bg-transparent text-gray-200 flex"
       dir={isRTL ? "rtl" : "ltr"}
     >
       {/* DESKTOP SIDEBAR */}
       <aside
-        className={`hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md z-30 transition-all duration-300 ${isRTL ? "border-l border-r-0" : "border-r"}`}
+        className={`hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-zinc-950/40 border-r border-white/5 backdrop-blur-md z-30 transition-all duration-300 ${isRTL ? "border-l border-r-0" : "border-r"}`}
       >
         <div className="h-[10vh] flex items-center justify-between px-6 border-b border-white/5">
           <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function AdminLayout({ children }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-white/5 bg-zinc-950/40">
+        <div className="p-4 border-t border-white/5 bg-zinc-950/20">
           <button
             onClick={handleLogoutClick}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-500/10 transition-all duration-300 font-medium cursor-pointer"
@@ -131,7 +131,7 @@ export default function AdminLayout({ children }) {
 
       {/* MOBILE DRAWER */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 lg:hidden ${
           sidebarOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -139,7 +139,7 @@ export default function AdminLayout({ children }) {
         onClick={() => setSidebarOpen(false)}
       />
       <aside
-        className={`fixed top-0 bottom-0 w-64 bg-zinc-950 border-r border-white/5 z-50 flex flex-col transition-transform duration-300 lg:hidden ${
+        className={`fixed top-0 bottom-0 w-64 bg-zinc-950/60 backdrop-blur-md border-r border-white/5 z-50 flex flex-col transition-transform duration-300 lg:hidden ${
           isRTL ? "right-0" : "left-0"
         } ${
           sidebarOpen
@@ -182,7 +182,7 @@ export default function AdminLayout({ children }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-white/5 bg-zinc-950/40">
+        <div className="p-4 border-t border-white/5 bg-zinc-950/20">
           <button
             onClick={() => {
               setSidebarOpen(false);
@@ -199,7 +199,7 @@ export default function AdminLayout({ children }) {
       {/* MAIN VIEWPORT CONTAINER */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* TOPBAR */}
-        <header className="h-[10vh] sticky top-0 flex items-center justify-between px-6 border-b border-white/5 bg-background-base/80 backdrop-blur-md z-20">
+        <header className="h-[10vh] sticky top-0 flex items-center justify-between px-6 border-b border-white/5 bg-transparent backdrop-blur-md z-20">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -233,7 +233,7 @@ export default function AdminLayout({ children }) {
         </header>
 
         {/* PAGE CONTENT PANEL */}
-        <main className="flex-1 p-6 md:p-8 overflow-y-auto bg-background-base">
+        <main className="flex-1 p-6 md:p-8 overflow-y-auto bg-transparent">
           <div className="max-w-7xl mx-auto animate-fade-in">{children}</div>
         </main>
       </div>

@@ -43,7 +43,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="bg-black h-screen flex items-center justify-center">
+      <div className="bg-transparent h-screen flex items-center justify-center">
         <div className="animate-spin border-2 rounded-full h-10 w-10 border-t-0 border-white"></div>
       </div>
     );

@@ -42,9 +42,9 @@ export default function StaffLayout({ children }) {
   };
 
   return (
-    <div className="min-h-screen bg-background-base text-gray-200 flex flex-col" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="min-h-screen bg-transparent text-gray-200 flex flex-col" dir={isRTL ? "rtl" : "ltr"}>
       {/* MOBILE-FIRST TOPBAR */}
-      <header className="h-[10vh] sticky top-0 flex items-center justify-between px-4 border-b border-white/5 bg-zinc-950/80 backdrop-blur-md z-30">
+      <header className="h-[10vh] sticky top-0 flex items-center justify-between px-4 border-b border-white/5 bg-zinc-950/40 backdrop-blur-md z-30">
         <div className="flex items-center gap-3">
           <img
             src={logo1}
@@ -85,14 +85,14 @@ export default function StaffLayout({ children }) {
       </header>
 
       {/* VIEWPORT LAYOUT */}
-      <main className="flex-1 p-4 sm:p-6 overflow-y-auto bg-background-base pb-24 lg:pb-8">
+      <main className="flex-1 p-4 sm:p-6 overflow-y-auto bg-transparent pb-24 lg:pb-8">
         <div className="max-w-4xl mx-auto animate-fade-in">
           {children}
         </div>
       </main>
 
       {/* HIGH-ACCESSIBILITY MOBILE BOTTOM SHEET NAV BAR */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-[8vh] bg-zinc-950 border-t border-white/5 flex justify-around items-center px-6 z-40 backdrop-blur-md">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-[8vh] bg-zinc-950/60 border-t border-white/5 flex justify-around items-center px-6 z-40 backdrop-blur-md">
         <NavLink
           to="/staff/dashboard"
           end
